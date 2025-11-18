@@ -11,10 +11,9 @@
 ### 核心功能模組
 
 1. [Google OAuth 認證系統](./01_google_oauth.md) - Google OAuth 2.0 認證流程與實作
-2. [Gmail 郵件服務](./02_gmail_service.md) - Gmail SMTP 郵件發送服務
-3. [會議分析服務](./03_meeting_analysis.md) - OpenAI 會議分析與 AI 生成
-4. [資料庫服務](./04_database_service.md) - D1 資料庫操作與管理
-5. [自動分析服務](./05_auto_analysis.md) - 會議自動分析調度系統
+2. [會議分析服務](./03_meeting_analysis.md) - OpenAI 會議分析與 AI 生成
+3. [資料庫服務](./04_database_service.md) - D1 資料庫操作與管理
+4. [自動分析服務](./05_auto_analysis.md) - 會議自動分析調度系統
 
 ### 整合服務
 
@@ -63,7 +62,6 @@
 | 功能 | 文件 | 關鍵檔案 |
 |------|------|----------|
 | 使用者登入 | [01_google_oauth.md](./01_google_oauth.md) | `authGoogle.ts`, `authGoogleInit.ts` |
-| 郵件發送 | [02_gmail_service.md](./02_gmail_service.md) | `gmail.ts` |
 | 會議分析 | [03_meeting_analysis.md](./03_meeting_analysis.md) | `openai.ts`, `analyzeAuthenticatedMeeting.ts` |
 | 資料庫操作 | [04_database_service.md](./04_database_service.md) | `database.ts` |
 | 自動分析 | [05_auto_analysis.md](./05_auto_analysis.md) | `autoAnalysisService.ts` |
@@ -72,6 +70,7 @@
 | 通知郵件 | [08_notification_emails.md](./08_notification_emails.md) | `gmail.ts` |
 | CI/CD 部署 | [09_gitlab_cicd.md](./09_gitlab_cicd.md) | `.gitlab-ci.yml` |
 | Cloudflare 部署 | [10_cloudflare_deployment.md](./10_cloudflare_deployment.md) | `wrangler.jsonc` |
+| 安全實踐 | [11_security_practices.md](./11_security_practices.md) | Security guidelines |
 
 ### 依開發階段查找
 
@@ -79,7 +78,7 @@
 |------|--------------|
 | **環境設定** | 10_cloudflare_deployment.md |
 | **認證開發** | 01_google_oauth.md |
-| **郵件功能** | 02_gmail_service.md, 08_notification_emails.md |
+| **郵件功能** | 08_notification_emails.md |
 | **會議分析** | 03_meeting_analysis.md, 04_database_service.md |
 | **自動化整合** | 05_auto_analysis.md, 06_zoom_integration.md, 07_google_meet_integration.md |
 | **部署上線** | 09_gitlab_cicd.md, 10_cloudflare_deployment.md |
