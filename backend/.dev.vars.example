@@ -1,0 +1,24 @@
+# Development environment variables
+# Copy this file to .dev.vars and fill in your actual values
+
+# AI API Keys (existing)
+OPENAI_API_KEY=your_openai_api_key_here
+
+PERPLEXITY_API_KEY=your_perplexity_api_key_here
+
+# Email Authentication (NEW)
+JWT_SECRET=your_super_secure_jwt_secret_at_least_32_characters_long
+
+# MailChannels Configuration (NEW)
+FROM_EMAIL=noreply@yourdomain.com
+APP_NAME=Coach AI
+BACKEND_URL=http://localhost:8788
+FRONTEND_URL=http://localhost:5173
+
+# Optional: DKIM Configuration for MailChannels (for production)
+# DKIM_DOMAIN=yourdomain.com
+# DKIM_SELECTOR=mailchannels
+# DKIM_PRIVATE_KEY=your_dkim_private_key_here
+
+# WHISPER_API_KEY=
+# CLOUDCONVERT_API_KEY=

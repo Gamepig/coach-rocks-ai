@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>測試分析請求</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .section {
+      margin: 20px 0;
+      padding: 15px;
+      background: #f9f9f9;
+      border-radius: 5px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 5px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 14px;
+    }
+    .success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-size: 12px;
+      margin-left: 10px;
+    }
+    .status.ok { background: #28a745; color: white; }
+    .status.error { background: #dc3545; color: white; }
+    .status.warning { background: #ffc107; color: black; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 測試分析請求</h1>
+    
+    <div class="section">
+      <h2>步驟 1: 檢查環境</h2>
+      <button onclick="checkEnvironment()">檢查環境變數</button>
+      <div id="env-result"></div>
+    </div>
+    
+    <div class="section">
+      <h2>步驟 2: 檢查 Session Token</h2>
+      <button onclick="checkToken()">檢查 Token</button>
+      <div id="token-result"></div>
+    </div>
+    
+    <div class="section">
+      <h2>步驟 3: 測試分析請求</h2>
+      <button onclick="testAnalysisRequest()">執行測試</button>
+      <div id="test-result"></div>
+    </div>
+    
+    <div class="section">
+      <h2>步驟 4: 查看 Network 請求</h2>
+      <p>請打開 DevTools → Network 面板，然後執行測試，觀察以下項目：</p>
+      <ul>
+        <li>是否有 OPTIONS 預檢請求？</li>
+        <li>POST 請求的 Request Headers 是否有 Authorization？</li>
+        <li>Response Status Code 是什麼？</li>
+        <li>Response Body 是什麼？</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // 獲取後端 URL（從當前頁面環境推斷）
+    function getBackendUrl() {
+      // 嘗試從當前頁面推斷後端 URL
+      const currentHost = window.location.hostname;
+      
+      if (currentHost.includes('pages.dev')) {
+        // 生產環境：使用已知的後端 URL
+        return 'https://coach-backend.gamepig1976.workers.dev';
+      } else if (currentHost === 'localhost' || currentHost === '127.0.0.1') {
+        // 本地開發環境：使用生產環境後端（禁止使用 localhost:8787，詳見 PROJECT_RULES.md）
+        return 'https://coach-backend.gamepig1976.workers.dev';
+      } else {
+        // 嘗試從環境變數獲取（如果可用）
+        return window.VITE_BACKEND_BASE_URL || 'https://coach-backend.gamepig1976.workers.dev';
+      }
+    }
+
+    function showResult(elementId, message, type = 'info') {
+      const element = document.getElementById(elementId);
+      element.innerHTML = `<div class="result ${type}">${message}</div>`;
+    }
+
+    function checkEnvironment() {
+      const backendUrl = getBackendUrl();
+      const message = `
+📋 環境檢查結果：
+
+當前頁面: ${window.location.href}
+後端 URL: ${backendUrl}
+環境變數 VITE_BACKEND_BASE_URL: ${window.VITE_BACKEND_BASE_URL || '未設定（使用推斷值）'}
+      `.trim();
+      showResult('env-result', message, 'info');
+    }
+
+    function checkToken() {
+      const token = localStorage.getItem('sessionToken');
+      const message = `
+📋 Token 檢查結果：
+
+Token 存在: ${token ? '✅ 是' : '❌ 否'}
+Token 長度: ${token ? token.length : 0}
+Token 預覽: ${token ? token.substring(0, 30) + '...' : '無'}
+      `.trim();
+      showResult('token-result', message, token ? 'success' : 'error');
+    }
+
+    async function testAnalysisRequest() {
+      const resultElement = document.getElementById('test-result');
+      resultElement.innerHTML = '<div class="result info">⏳ 執行測試中...</div>';
+
+      try {
+        // 1. 檢查 Token
+        const token = localStorage.getItem('sessionToken');
+        if (!token) {
+          showResult('test-result', '❌ 錯誤: 沒有 sessionToken，請先登入生產環境', 'error');
+          return;
+        }
+
+        // 2. 獲取後端 URL
+        const backendUrl = getBackendUrl();
+        const apiUrl = `${backendUrl}/api/analyze-authenticated-meeting`;
+
+        // 3. 準備測試數據
+        const testData = {
+          fileContent: 'Test meeting transcript content for diagnostic purposes.',
+          fileName: 'test-meeting-diagnostic.txt',
+          uploadType: 'document',
+          clientOption: 'new',
+          clientName: 'Test Client Diagnostic',
+          clientId: null,
+          meetingDate: new Date().toISOString().split('T')[0]
+        };
+
+        // 4. 準備 Request Headers
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        };
+
+        console.log('📡 發送請求到:', apiUrl);
+        console.log('📡 Request Headers:', headers);
+        console.log('📡 Request Body:', testData);
+
+        // 5. 發送請求
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(testData)
+        });
+
+        const responseData = await response.json().catch(() => ({ error: 'Failed to parse JSON' }));
+
+        // 6. 顯示結果
+        let resultMessage = `
+📥 測試結果：
+
+Status Code: ${response.status} ${response.statusText}
+Response Headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2)}
+Response Body: ${JSON.stringify(responseData, null, 2)}
+        `.trim();
+
+        if (response.status === 401) {
+          resultMessage += '\n\n❌ 收到 401 錯誤！';
+          if (responseData.message?.includes('Missing or invalid authorization header')) {
+            resultMessage += '\n🚨 確認問題: Authorization header 缺失或無效';
+            resultMessage += '\n\n🔍 請檢查 Network 面板：';
+            resultMessage += '\n  1. Request Headers 是否有 Authorization？';
+            resultMessage += '\n  2. 是否有 OPTIONS 預檢請求？';
+            resultMessage += '\n  3. OPTIONS 響應的 Access-Control-Allow-Headers 是否包含 Authorization？';
+          }
+          showResult('test-result', resultMessage, 'error');
+        } else if (response.ok) {
+          resultMessage += '\n\n✅ 請求成功！';
+          showResult('test-result', resultMessage, 'success');
+        } else {
+          resultMessage += '\n\n❌ 請求失敗！';
+          showResult('test-result', resultMessage, 'error');
+        }
+
+        // 7. Console 輸出
+        console.log('📥 Response Status:', response.status, response.statusText);
+        console.log('📥 Response Data:', responseData);
+
+      } catch (error) {
+        const errorMessage = `
+❌ 請求錯誤：
+
+錯誤訊息: ${error.message}
+錯誤堆疊: ${error.stack}
+        `.trim();
+        showResult('test-result', errorMessage, 'error');
+        console.error('❌ 請求錯誤:', error);
+      }
+    }
+
+    // 頁面載入時自動檢查環境和 Token
+    window.addEventListener('load', () => {
+      checkEnvironment();
+      checkToken();
+    });
+  </script>
+</body>
+</html>
+

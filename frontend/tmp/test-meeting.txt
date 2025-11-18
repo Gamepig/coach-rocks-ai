@@ -1,0 +1,1 @@
+Test meeting transcript content for diagnostic purposes. This is a sample meeting transcript to test the analysis functionality.

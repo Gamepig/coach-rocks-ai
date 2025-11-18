@@ -1,0 +1,29 @@
+{
+  "name": "coach-backend",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev --port 8788",
+    "start": "wrangler dev --port 8788",
+    "cf-typegen": "wrangler types"
+  },
+  "dependencies": {
+    "@tsndr/cloudflare-worker-jwt": "^2.4.2",
+    "axios": "^1.6.8",
+    "chanfana": "^2.6.3",
+    "ffmpeg-static": "^5.1.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "hono": "^4.6.20",
+    "nodemailer": "^7.0.10",
+    "openai": "^4.104.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.9.36",
+    "@types/node": "22.13.0",
+    "@types/service-worker-mock": "^2.0.4",
+    "typescript": "^5.9.2",
+    "wrangler": "^4.21.0"
+  }
+}

@@ -1,0 +1,169 @@
+# MCP 配置（包含 API 密鑰）
+.mcp.json
+.cursor/mcp.json
+
+# 環境變數
+.env
+.env.local
+.env.*.local
+.dev.vars
+
+# 依賴
+node_modules/
+.pnp
+.pnp.js
+
+# 測試
+coverage/
+
+# 測試檔案（大型 MP4）
+frontend/frontend/tmp/*.mp4
+*.mp4
+
+# 生產
+build/
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+
+# 日誌
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# AI Agent 交接文件（Prompt 和文檔）
+# JSON Prompt 檔案
+Tasks/handoff_*.json
+Tasks/*handoff*.json
+Tasks/*completion*.json
+Tasks/*testing*.json
+Tasks/*TESTING*.json
+Tasks/*COMPLETION*.json
+
+# Markdown 交接文檔
+Tasks/*handoff*.md
+Tasks/*HANDOFF*.md
+Tasks/CURSOR_*_HANDOFF*.md
+Tasks/*_FINAL_HANDOFF*.md
+Tasks/*_handoff_*.md
+
+# 其他可能的交接檔案格式
+Tasks/*handoff*.txt
+Tasks/*HANDOFF*.txt
+
+# Core Project & AI Files (不上傳 - 開發內部配置)
+CLAUDE.MD
+GEMINI.MD
+AGENTS.md
+AI_RULES.md
+AIPROJECT.MD
+
+# SECURITY.md 保留上傳 (公開的安全政策)
+
+# AI Agent 測試和報告文件（不上傳）
+EXECUTION_SUMMARY.md
+IMPLEMENTATION_REPORT.md
+FIX_VERIFICATION.md
+FIX_VERIFICATION_FINAL.md
+DEPLOYMENT_REPORT.md
+MAILCHANNELS_MIGRATION_PLAN.md
+OPTION_C_EXECUTION_PLAN.md
+P0_PHASE_1_DEPLOYMENT_CHECKLIST.md
+TESTING_QUICK_START.md
+RULES_CONFIRMATION.md
+RULES_COMPLIANCE_CONFIRMATION.md
+
+# Documentation
+documents/
+
+# Memory Bank & Rules Summary (開發工具配置，不上傳)
+memory-bank/
+rules-summary/
+
+# Test Reports & Results
+frontend/playwright-report/
+frontend/test-results/
+
+# Development Logs & Tasks
+task_logs/
+Tasks/
+
+# Local Environment & Tooling
+.cache/
+.claude/
+.cursor/
+.serena/
+.npm/
+.playwright-mcp/
+.wrangler/
+backup/
+gitlab-upload/
+
+# Temporary & Backup Files
+*.bak
+*.backup_*
+
+# Internal documentation (previously removed)
+HANDOFF_JSON_PROMPT.json
+HANDOFF_TEST_VERIFICATION.json
+MINIMAL_CHANGES_VERIFICATION.md
+NEW_CLIENT_EMAIL_FEATURE_PLAN.md
+PROJECT_RULES.md
+RULES_INDEX.md
+ROLLBACK_POINT_*.md
+playwright-json-report*.json
+mcp.json
+GOOGLE_OAUTH_DEPLOYMENT_GUIDE.md
+
+# Backend internal docs
+backend/AI_API_CHECK_REPORT.md
+backend/ANALYSIS_MODAL_FLASH_ANALYSIS.md
+backend/authenticated-user-experience-test.md
+backend/CLIENT_EMAIL_TEMPLATE.md
+backend/CURRENT_USER_FLOWS.md
+backend/EMAIL_CONFIGURATION_STATUS.md
+backend/EMAIL_DNS_WITHOUT_GODADDY_ACCESS.md
+backend/EMAIL_FIX_COMPLETE_SUMMARY.md
+backend/EMAIL_FIX_GUIDE.md
+backend/EMAIL_TEST_INSTRUCTIONS.md
+backend/GMAIL_SMTP_LIMITATION_ANALYSIS.md
+backend/GODADDY_UPDATE_NAMESERVERS.md
+backend/DOMAIN_REGISTRATION_STATUS.md
+backend/DOMAIN_SETUP_GUIDE.md
+backend/RESEND_DOMAIN_STATUS.md
+backend/RESEND_IMPLEMENTATION_SUMMARY.md
+backend/RESEND_PRIMARY_SETUP.md
+backend/RESEND_READY_TO_USE.md
+backend/test-session-management.md
+backend/CLOUDFLARE_ADD_DOMAIN_STEPS.md
+backend/CLOUDFLARE_SETUP_STEPS.md
+backend/PRD.md
+backend/README_MOCK_DATA.md
+backend/MAILCHANNELS_CONFIG.md
+backend/MAILCHANNELS_DNS_CONFIG.md
+backend/MAILCHANNELS_DNS_SETUP.md
+backend/MAILCHANNELS_QUICK_START.md
+backend/MAILCHANNELS_SETUP.md
+backend/RESEND_CUSTOMER_DNS_SETUP_GUIDE.md
+backend/RESEND_SETUP.md
+
+# Frontend internal docs
+frontend/markdown.md
+frontend/README_FRONTEND_UPDATE.md
+
+# Other internal files
+chroma_db/
+testfile.txt
+test-*.py
+test-*.js

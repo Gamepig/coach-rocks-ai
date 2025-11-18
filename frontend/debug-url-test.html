@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>URL Parameter Test</title>
+</head>
+<body>
+    <h1>URL Parameter Test</h1>
+    <div id="output"></div>
+    
+    <script>
+        // Test if URL parameters are being parsed correctly
+        const urlParams = new URLSearchParams(window.location.search)
+        const verified = urlParams.get('verified')
+        const analysisStatus = urlParams.get('analysis')
+        const meetingId = urlParams.get('meetingId')
+        const token = urlParams.get('token')
+        const error = urlParams.get('error')
+        
+        const output = document.getElementById('output')
+        output.innerHTML = `
+            <p><strong>URL:</strong> ${window.location.href}</p>
+            <p><strong>Search params:</strong> ${window.location.search}</p>
+            <p><strong>verified:</strong> ${verified} (${typeof verified})</p>
+            <p><strong>analysisStatus:</strong> ${analysisStatus} (${typeof analysisStatus})</p>
+            <p><strong>meetingId:</strong> ${meetingId} (${typeof meetingId})</p>
+            <p><strong>token:</strong> ${token ? token.substring(0, 20) + '...' : 'null'} (${typeof token})</p>
+            <p><strong>error:</strong> ${error} (${typeof error})</p>
+            <hr>
+            <p><strong>Condition check:</strong> ${verified === 'true' && analysisStatus === 'complete' && meetingId}</p>
+        `
+        
+        // Test if the condition would pass
+        if (verified === 'true' && analysisStatus === 'complete' && meetingId) {
+            output.innerHTML += '<p style="color: green;"><strong>✅ URL parameters would trigger email verification flow</strong></p>'
+        } else {
+            output.innerHTML += '<p style="color: red;"><strong>❌ URL parameters would NOT trigger email verification flow</strong></p>'
+        }
+    </script>
+</body>
+</html>

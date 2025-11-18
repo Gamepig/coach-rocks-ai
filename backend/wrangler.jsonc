@@ -1,0 +1,87 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "coach-backend",
+	"main": "src/index.ts",
+	"compatibility_date": "2025-06-20",
+	"account_id": "9288c023577aa2f6ce20582b6c4bdda0",
+	"observability": {
+		"enabled": true
+	},
+ "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "coachdb",
+      "database_id": "d15ec66a-762c-40a2-bc8e-d64a1c8eb440"
+    }
+  ],
+
+	/**
+	 * Bindings
+	 * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
+	 * databases, object storage, AI inference, real-time communication and more.
+	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/
+	 */
+	"ai": {
+		"binding": "AI"
+	},
+
+	/**
+	 * Environment Variables
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
+	 */
+	"vars": { 
+		// Environment variables go here (non-sensitive data only)
+	},
+	/**
+	 * Note: Use secrets to store sensitive data.
+	 * https://developers.cloudflare.com/workers/configuration/secrets/
+	 * 
+	 * Required secrets (use `wrangler secret put <NAME>` to set):
+	 * 
+	 * AI Services:
+	 * - OPENAI_API_KEY: OpenAI API key
+	 * - PERPLEXITY_API_KEY: Perplexity API key
+	 * - SERPER_API_KEY: Serper.dev API key
+	 * 
+	 * Authentication:
+	 * - JWT_SECRET: JWT signing secret (generate with: openssl rand -hex 32)
+	 * 
+	 * Email Service (Gmail SMTP):
+	 * - GMAIL_SMTP_USER: Gmail account (e.g., noreply@coachrocks.com)
+	 * - GMAIL_SMTP_PASSWORD: Google App Password
+	 * - FROM_EMAIL: Email sender address
+	 * - APP_NAME: Application name
+	 * 
+	 * OAuth - Google:
+	 * - GOOGLE_CLIENT_ID: Google OAuth Client ID
+	 * - GOOGLE_CLIENT_SECRET: Google OAuth Client Secret
+	 * - GOOGLE_REDIRECT_URI: Google OAuth redirect URI
+	 * 
+	 * OAuth - Zoom:
+	 * - ZOOM_CLIENT_ID: Zoom OAuth Client ID
+	 * - ZOOM_CLIENT_SECRET: Zoom OAuth Client Secret
+	 * - ZOOM_REDIRECT_URI: Zoom OAuth redirect URI
+	 * 
+	 * Application URLs:
+	 * - BACKEND_URL: Backend API URL
+	 * - FRONTEND_URL: Frontend application URL
+	 * 
+	 * See backend/ENV_SETUP.md for detailed setup instructions.
+	 */
+
+	/**
+	 * Static Assets
+	 * https://developers.cloudflare.com/workers/static-assets/binding/
+	 */
+	// "assets": { "directory": "./public/", "binding": "ASSETS" },
+
+	/**
+	 * Service Bindings (communicate between multiple Workers)
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
+	 */
+	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
+}

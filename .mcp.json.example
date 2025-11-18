@@ -1,0 +1,110 @@
+{
+  "mcpServers": {
+    "triple-rag": {
+      "command": "/path/to/python",
+      "args": [
+        "/path/to/RAG_MCP/mcp_server/server.py"
+      ],
+      "env": {
+        "OPENROUTER_API_KEY": "your-openrouter-api-key",
+        "DATABASE_URL": "postgresql://user@localhost/triple_rag_db",
+        "DEFAULT_LLM_MODEL": "deepseek/deepseek-chat-v3-0324:free",
+        "FAST_MODEL": "google/gemini-2.0-flash-exp:free",
+        "THINKING_MODEL": "deepseek/deepseek-r1:free",
+        "PYTHONPATH": "/path/to/RAG_MCP"
+      }
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    },
+    "task-master-ai": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "--package=task-master-ai",
+        "task-master-ai"
+      ],
+      "env": {
+        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "GOOGLE_API_KEY": "${GOOGLE_API_KEY}",
+        "XAI_API_KEY": "${XAI_API_KEY}",
+        "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}",
+        "MISTRAL_API_KEY": "${MISTRAL_API_KEY}",
+        "AZURE_OPENAI_API_KEY": "${AZURE_OPENAI_API_KEY}",
+        "OLLAMA_API_KEY": "not-required",
+        "OLLAMA_BASE_URL": "http://localhost:11434/v1"
+      }
+    },
+    "memory-bank": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/ipospelov/mcp-memory-bank",
+        "mcp_memory_bank"
+      ]
+    },
+    "time-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "time-mcp"
+      ]
+    },
+    "playwright-mcp": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ]
+    },
+    "database": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@ahmetbarut/mcp-database-server"
+      ],
+      "env": {
+        "DATABASE_CONNECTIONS_FILE": "/path/to/.config/claude/database-connections.json"
+      }
+    },
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena-mcp-server",
+        "--context",
+        "ide-assistant"
+      ]
+    },
+    "MCP_DOCKER": {
+      "command": "docker",
+      "args": [
+        "mcp",
+        "gateway",
+        "run"
+      ]
+    },
+    "cloudflare-workers-bindings": {
+      "url": "https://bindings.mcp.cloudflare.com/mcp",
+      "description": "管理 Cloudflare Workers 綁定（D1、AI、KV、R2 等）"
+    },
+    "cloudflare-observability": {
+      "url": "https://observability.mcp.cloudflare.com/mcp",
+      "description": "監控 Workers 日誌、錯誤率和效能指標"
+    },
+    "cloudflare-ai-gateway": {
+      "url": "https://ai-gateway.mcp.cloudflare.com/mcp",
+      "description": "監控 AI API 使用量（OpenAI、DeepSeek、Perplexity）"
+    },
+    "cloudflare-audit-logs": {
+      "url": "https://auditlogs.mcp.cloudflare.com/mcp",
+      "description": "查詢審計日誌和生成安全報告"
+    }
+  }
+}

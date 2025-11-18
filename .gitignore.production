@@ -1,0 +1,147 @@
+# Production .gitignore - 最小化上傳清單
+
+# ============================================
+# 依賴和建置輸出
+# ============================================
+node_modules/
+.pnp
+.pnp.js
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# 建置輸出
+dist/
+build/
+*.log
+
+# ============================================
+# 環境變數和敏感資訊
+# ============================================
+.env
+.env.local
+.env.production
+.env.*.local
+.dev.vars
+*.local
+mcp.json
+.cursor/
+.claude/
+.serena/
+
+# ============================================
+# 測試相關（全部排除）
+# ============================================
+# Frontend 測試
+frontend/tests/
+frontend/test-results/
+frontend/playwright-report/
+frontend/test-*.js
+frontend/debug-*.html
+frontend/markdown.md
+
+# Backend 測試
+backend/test-*.js
+backend/test-*.mjs
+backend/test-*.sh
+backend/debug-*.js
+backend/*.bat
+
+# 測試報告
+coverage/
+playwright-json-report*.json
+*.test.js
+*.spec.js
+
+# ============================================
+# 開發工具和腳本（排除非部署腳本）
+# ============================================
+backend/generate-*.js
+backend/insert-*.js
+backend/fix-*.js
+backend/check-*.sql
+backend/delete-*.sql
+backend/execute-*.sql
+backend/generate-*.sql
+backend/ClientDetails.jsx
+
+# ============================================
+# 文件和紀錄檔（排除所有 .md，除了 README）
+# ============================================
+# AI Agent 協作文件
+CLAUDE.MD
+GEMINI.MD
+AGENTS.md
+AI_RULES.md
+AIPROJECT.MD
+SECURITY.md
+RULES_*.md
+*.md
+!README.md
+!backend/README.md
+!frontend/README.md
+
+# 知識庫和任務管理
+memory-bank/
+task_logs/
+Tasks/
+rules-summary/
+
+# 文件目錄（排除所有內部文件）
+documents/
+!documents/cloudflare_deployment_plan.md
+!documents/cloudflare_pages_frontend_deploy_plan.md
+!documents/cloudflare_deployment_complete_plan.md
+
+# ============================================
+# 備份和臨時檔案
+# ============================================
+backup/
+*.bak
+*.backup
+*.backup_*
+*.tmp
+tmp/
+temp/
+frontend/frontend/tmp/
+
+# ============================================
+# IDE 和系統檔案
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Library/
+
+# ============================================
+# 其他不需要的檔案
+# ============================================
+gitlab-demo/
+testfile.txt
+wrangler_dev.log
+wrangler_dev.pid
+
+# ============================================
+# 保留的檔案（必要）
+# ============================================
+# ✅ backend/src/ - 所有源碼
+# ✅ backend/migrations/ - 資料庫遷移
+# ✅ backend/package.json
+# ✅ backend/tsconfig.json
+# ✅ backend/wrangler.jsonc
+# ✅ backend/worker-configuration.d.ts
+# ✅ frontend/src/ - 所有源碼
+# ✅ frontend/public/ - 公開資源
+# ✅ frontend/package.json
+# ✅ frontend/vite.config.js
+# ✅ frontend/eslint.config.js
+# ✅ frontend/playwright.config.js
+# ✅ frontend/index.html
+# ✅ scripts/ - 部署腳本
+# ✅ .gitlab-ci.yml
+# ✅ README.md
+

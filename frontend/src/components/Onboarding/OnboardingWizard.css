@@ -1,0 +1,348 @@
+.onboarding-wizard {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.wizard-container {
+  width: 100%;
+  max-width: 600px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 48px 40px;
+  margin: 20px;
+}
+
+.wizard-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.wizard-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0 0 8px 0;
+}
+
+.wizard-header p {
+  font-size: 16px;
+  color: #718096;
+  margin: 0;
+}
+
+.wizard-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+  gap: 20px;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.progress-step span {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #a0aec0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active span {
+  background: #667eea;
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.progress-step.completed span {
+  background: #48bb78;
+  color: white;
+}
+
+.progress-step p {
+  font-size: 12px;
+  color: #a0aec0;
+  margin: 0;
+  text-align: center;
+  width: 60px;
+}
+
+.progress-step.active p,
+.progress-step.completed p {
+  color: #2d3748;
+  font-weight: 500;
+}
+
+.progress-line {
+  flex: 1;
+  height: 2px;
+  background: #e2e8f0;
+  max-width: 60px;
+}
+
+.wizard-content {
+  min-height: 400px;
+  margin-bottom: 40px;
+}
+
+.step-content {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-content h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0 0 12px 0;
+}
+
+.step-content > p {
+  font-size: 16px;
+  color: #718096;
+  margin: 0 0 32px 0;
+  line-height: 1.6;
+}
+
+.welcome-step .welcome-icon {
+  font-size: 64px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.feature {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: #f7fafc;
+  border-radius: 8px;
+}
+
+.feature-icon {
+  font-size: 32px;
+  min-width: 48px;
+}
+
+.feature h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0 0 4px 0;
+}
+
+.feature p {
+  font-size: 13px;
+  color: #718096;
+  margin: 0;
+}
+
+.step-description {
+  background: #edf2f7;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #2d3748;
+  margin: 0;
+  border-left: 4px solid #667eea;
+}
+
+.integrations-step .integrations-container {
+  background: #f7fafc;
+  padding: 24px;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.completion-step .completion-icon {
+  font-size: 80px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.completion-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.checklist-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  background: #f0fff4;
+  border-radius: 8px;
+}
+
+.checkmark {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #48bb78;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  min-width: 24px;
+}
+
+.checklist-item p {
+  font-size: 14px;
+  color: #22543d;
+  margin: 0;
+}
+
+.completion-message {
+  background: #eff6ff;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1e3a8a;
+  border-left: 4px solid #3b82f6;
+  margin: 0;
+}
+
+.error-message {
+  background: #fff5f5;
+  color: #c53030;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  border-left: 4px solid #f56565;
+}
+
+.wizard-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn-secondary,
+.btn-primary {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #2d3748;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #cbd5e0;
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+  min-width: 120px;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #5568d3;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-complete {
+  background: #48bb78;
+}
+
+.btn-complete:hover:not(:disabled) {
+  background: #38a169;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .wizard-container {
+    padding: 32px 24px;
+  }
+
+  .wizard-header h1 {
+    font-size: 24px;
+  }
+
+  .step-content h2 {
+    font-size: 20px;
+  }
+
+  .wizard-progress {
+    gap: 12px;
+  }
+
+  .progress-step span {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .progress-step p {
+    font-size: 11px;
+    width: 50px;
+  }
+
+  .progress-line {
+    max-width: 40px;
+  }
+
+  .wizard-actions {
+    flex-direction: column;
+  }
+
+  .btn-secondary,
+  .btn-primary {
+    width: 100%;
+  }
+}
