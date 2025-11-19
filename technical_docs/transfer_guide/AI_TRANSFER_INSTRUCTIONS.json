@@ -19,7 +19,7 @@
   "phases": {
     "phase_1": {
       "name": "Cloudflare 帳戶準備",
-      "execution_by": "Katherine（手動）",
+      "execution_by": "使用者（手動）",
       "steps": [
         {
           "step_id": "P1_S1",
@@ -99,7 +99,7 @@
     },
     "phase_3": {
       "name": "Google OAuth 和 Secrets 配置",
-      "execution_by": "混合（Katherine 提供信息，AI 執行）",
+      "execution_by": "混合（使用者 提供信息，AI 執行）",
       "steps": [
         {
           "step_id": "P3_S1",
@@ -205,17 +205,17 @@
           "operation": "migrate_d1_database",
           "priority": "P0",
           "type": "hybrid",
-          "description": "遷移 D1 資料庫至 Katherine 帳戶",
+          "description": "遷移 D1 資料庫至 使用者 帳戶",
           "options": [
             {
               "option": "A（推薦）",
               "method": "使用 Wrangler export/import",
               "steps": [
                 "1. AI 執行：cd backend && wrangler d1 export coachdb > backup.sql",
-                "2. 轉移 backup.sql 至 Katherine",
-                "3. Katherine 建立新資料庫：coachdb",
+                "2. 轉移 backup.sql 至 使用者",
+                "3. 使用者 建立新資料庫：coachdb",
                 "4. AI 執行：wrangler d1 import coachdb backup.sql",
-                "5. 記錄新的 database_id（從 Katherine 帳戶）",
+                "5. 記錄新的 database_id（從 使用者 帳戶）",
                 "6. AI 更新 wrangler.jsonc 中的 database_id"
               ]
             },
@@ -223,7 +223,7 @@
               "option": "B",
               "method": "新建空資料庫（快速但會遺失數據）",
               "steps": [
-                "1. Katherine 在 Cloudflare 建立新 D1：coachdb",
+                "1. 使用者 在 Cloudflare 建立新 D1：coachdb",
                 "2. 記錄新的 database_id",
                 "3. AI 更新 wrangler.jsonc",
                 "4. 初始化資料庫結構"

@@ -14,7 +14,7 @@
 新後端 URL:  https://coach-backend.katherine84522.workers.dev
 
 舊 Account ID:  9288c023577aa2f6ce20582b6c4bdda0
-新 Account ID:  [待從 Katherine 帳戶獲取]
+新 Account ID:  [待從 使用者 帳戶獲取]
 
 舊 Database ID: d15ec66a-762c-40a2-bc8e-d64a1c8eb440
 新 Database ID: [待遷移或新建]
@@ -72,7 +72,7 @@ grep -r 'd15ec66a-762c-40a2-bc8e-d64a1c8eb440' --include='*.jsonc' . --exclude-d
 
 ## 🔐 需要手動輸入的 Secrets
 
-### 當 Katherine 提供新 Account ID 時：
+### 當 使用者 提供新 Account ID 時：
 
 ```bash
 # 將 [NEW_ACCOUNT_ID] 替換為實際 ID
@@ -82,7 +82,7 @@ sed -i '' 's/"account_id": "9288c023577aa2f6ce20582b6c4bdda0"/"account_id": "[NE
 grep '"account_id"' backend/wrangler.jsonc
 ```
 
-### 當 Katherine 提供 Google OAuth 憑證時：
+### 當 使用者 提供 Google OAuth 憑證時：
 
 ```bash
 cd backend
@@ -192,7 +192,7 @@ curl -I https://api.coachrocks.com/api/health
 
 ---
 
-## 🗄️ 資料庫遷移（當 Katherine 已建立新 Database 時）
+## 🗄️ 資料庫遷移（當 使用者 已建立新 Database 時）
 
 ```bash
 # 當獲得新的 Database ID 時，更新 wrangler.jsonc
@@ -277,7 +277,7 @@ cd backend && wrangler deploy
     ↓
 2️⃣  更新 Git 配置 (Step 2)
     ↓
-3️⃣  等待 Katherine 提供 Account ID
+3️⃣  等待 使用者 提供 Account ID
     ↓
 4️⃣  更新 Account ID (Step 3)
     ↓
@@ -285,13 +285,13 @@ cd backend && wrangler deploy
     ↓
 6️⃣  驗證無遺漏 (Step 5)
     ↓
-7️⃣  等待 Katherine 建立 Google OAuth 憑證
+7️⃣  等待 使用者 建立 Google OAuth 憑證
     ↓
 8️⃣  更新 Google OAuth Secrets
     ↓
 9️⃣  複製其他 Secrets
     ↓
-🔟 等待 Katherine 完成資料庫遷移
+🔟 等待 使用者 完成資料庫遷移
     ↓
 1️⃣1️⃣ 更新 Database ID
     ↓
@@ -355,7 +355,7 @@ coach-backend.katherine84522.workers.dev  →  api.coachrocks.com
 coach-rocks-frontend.pages.dev             →  coachrocks.com
 ```
 
-### Step 1: 購買並驗證域名（Katherine 手動）
+### Step 1: 購買並驗證域名（使用者 手動）
 
 ```bash
 # Option A: 通過 Cloudflare Registrar
@@ -412,7 +412,7 @@ wrangler secret list | grep GOOGLE_REDIRECT
 5. 保存並測試：訪問 https://api.coachrocks.com/api/auth/google/init
 ```
 
-### Step 4: 在 Cloudflare 配置 Workers 自訂域名（Katherine 手動 - MANUAL_DOMAIN_002）
+### Step 4: 在 Cloudflare 配置 Workers 自訂域名（使用者 手動 - MANUAL_DOMAIN_002）
 
 ```
 最詳細教學：
@@ -439,7 +439,7 @@ SSL/TLS 配置（自動）:
   4. 測試: curl -I https://api.coachrocks.com/api/health
 ```
 
-### Step 5: 在 Cloudflare 配置 Pages 自訂域名（Katherine 手動 - MANUAL_DOMAIN_003）
+### Step 5: 在 Cloudflare 配置 Pages 自訂域名（使用者 手動 - MANUAL_DOMAIN_003）
 
 ```
 最詳細教學：
@@ -465,7 +465,7 @@ DNS 驗證（應自動配置）:
 3. 設置重定向: www → coachrocks.com（可選）
 ```
 
-### Step 6: 配置域名重定向（Katherine 手動 - MANUAL_DOMAIN_004）
+### Step 6: 配置域名重定向（使用者 手動 - MANUAL_DOMAIN_004）
 
 ```
 目的: 舊的 workers.dev 域名自動重定向到新域名

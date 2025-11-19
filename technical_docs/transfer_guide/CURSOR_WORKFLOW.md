@@ -41,7 +41,7 @@ technical_docs/transfer_guide/README.md
 請協助執行 CoachRocks AI 專案所有權轉移。
 開始前，請確認：
 1. 已打開 technical_docs/transfer_guide/PROJECT_OWNERSHIP_TRANSFER_GUIDE.md
-2. 已準備好 Katherine 的新 Cloudflare Account ID
+2. 已準備好 使用者 的新 Cloudflare Account ID
 3. 已閱讀 Phase 概覽
 
 然後按照 Phase 順序執行轉移步驟。
@@ -85,7 +85,7 @@ technical_docs/transfer_guide/README.md
 
 [幫我完成以下步驟]
 1. 確認已閱讀 P1_S1、P1_S2、P1_S3
-2. 提醒我需要向 Katherine 索要的信息：
+2. 提醒我需要向 使用者 索要的信息：
    - 新的 Cloudflare Account ID
    - 新的 Database ID（後續用）
 3. 列出 Phase 1 完成後的檢查點
@@ -101,7 +101,7 @@ technical_docs/transfer_guide/README.md
 
 **Prompt 給 Cursor AI**:
 ```
-Katherine 已提供新的 Cloudflare Account ID：[ID_HERE]
+使用者 已提供新的 Cloudflare Account ID：[ID_HERE]
 
 請幫我執行 Phase 2 的自動化 URL 更新：
 - 打開 TRANSFER_QUICK_REFERENCE.md 中的「AI 可立即執行的命令」
@@ -318,10 +318,10 @@ git --version
 wrangler --version
 ```
 
-### Phase 1: 帳戶準備 (由 Katherine 完成)
+### Phase 1: 帳戶準備 (由 使用者 完成)
 
-- [ ] 向 Katherine 索要新的 Cloudflare Account ID
-- [ ] 向 Katherine 索要新建立的 Database ID
+- [ ] 向 使用者 索要新的 Cloudflare Account ID
+- [ ] 向 使用者 索要新建立的 Database ID
 - [ ] 確認 Workers 和 Pages 已建立
 
 ### Phase 2: 自動化更新 (15 分鐘)
@@ -347,7 +347,7 @@ wrangler --version
 
 ### Phase 3: OAuth & RESEND (10 分鐘)
 
-- [ ] 向 Katherine 索要新的 Google OAuth 憑證
+- [ ] 向 使用者 索要新的 Google OAuth 憑證
 - [ ] 在 Cursor 終端中設置 Google OAuth Secrets
 - [ ] 執行 AUTO_008: 配置 RESEND 郵件服務
 - [ ] 測試 RESEND 郵件發送
@@ -361,7 +361,7 @@ node test-resend-email.js test@example.com
 
 ### Phase 4: 資料庫遷移 (20 分鐘)
 
-- [ ] 向 Katherine 索要新的 Database ID
+- [ ] 向 使用者 索要新的 Database ID
 - [ ] 使用 Composer 更新 wrangler.jsonc
 - [ ] 測試資料庫連接
 

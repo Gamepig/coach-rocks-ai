@@ -1,6 +1,6 @@
 # CoachRocks AI - 專案所有權轉移指南
 
-**目標**: 從 `gamepig1976@gmail.com` (Gamepig) 轉移至 `katherine84522@gmail.com` (Katherine)
+**目標**: 從 `gamepig1976@gmail.com` (Gamepig) 轉移至 `katherine84522@gmail.com` (使用者)
 **文件版本**: 1.0
 **最後更新**: 2025-11-19
 
@@ -178,13 +178,13 @@ git config user.email
     "file": "backend/wrangler.jsonc",
     "old_account_id": "9288c023577aa2f6ce20582b6c4bdda0",
     "new_account_id": "[MANUAL_INPUT]",
-    "note": "新 account_id 需從 Katherine 的 Cloudflare Dashboard 複製"
+    "note": "新 account_id 需從 使用者 的 Cloudflare Dashboard 複製"
   }
 }
 ```
 
 **手動步驟**:
-1. Katherine 登入 Cloudflare Dashboard
+1. 使用者 登入 Cloudflare Dashboard
 2. 複製右上角的 Account ID
 3. 告訴 AI 新的 Account ID
 4. AI 執行以下更新:
@@ -283,7 +283,7 @@ grep -r '9288c023577aa2f6ce20582b6c4bdda0' \
 
 ## 🔧 手動操作清單
 
-### Phase 1: Cloudflare 設置（必須由 Katherine 完成）
+### Phase 1: Cloudflare 設置（必須由 使用者 完成）
 
 #### Step 1️⃣: 獲取新的 Cloudflare Account ID
 
@@ -292,11 +292,11 @@ grep -r '9288c023577aa2f6ce20582b6c4bdda0' \
 ```json
 {
   "operation": "get_cloudflare_account_id",
-  "description": "Katherine 從 Cloudflare Dashboard 獲取新的 Account ID",
+  "description": "使用者 從 Cloudflare Dashboard 獲取新的 Account ID",
   "automation_type": "manual",
   "priority": "P0",
   "steps": [
-    "1. Katherine 登入 https://dash.cloudflare.com",
+    "1. 使用者 登入 https://dash.cloudflare.com",
     "2. 在右上角帳戶菜單中找到 'Account Settings'",
     "3. 在 'Account' 標籤中複製 'Account ID'（例如: abc123def456...）",
     "4. 提供給 AI，用於更新 wrangler.jsonc"
@@ -314,11 +314,11 @@ grep -r '9288c023577aa2f6ce20582b6c4bdda0' \
 ```json
 {
   "operation": "setup_cloudflare_workers",
-  "description": "在 Katherine 的 Cloudflare 帳戶建立新的 Workers",
+  "description": "在 使用者 的 Cloudflare 帳戶建立新的 Workers",
   "automation_type": "manual",
   "priority": "P0",
   "steps": [
-    "1. Katherine 登入 https://dash.cloudflare.com",
+    "1. 使用者 登入 https://dash.cloudflare.com",
     "2. 選擇 'Workers & Pages' > 'Overview'",
     "3. 建立新 Worker，命名為 'coach-backend'",
     "4. 使用 wrangler 部署：",
@@ -352,11 +352,11 @@ curl https://coach-backend.katherine84522.workers.dev/api/health
 ```json
 {
   "operation": "setup_cloudflare_pages",
-  "description": "在 Katherine 的 Cloudflare 帳戶建立新的 Pages",
+  "description": "在 使用者 的 Cloudflare 帳戶建立新的 Pages",
   "automation_type": "manual",
   "priority": "P0",
   "steps": [
-    "1. Katherine 登入 https://dash.cloudflare.com",
+    "1. 使用者 登入 https://dash.cloudflare.com",
     "2. 選擇 'Workers & Pages' > 'Pages'",
     "3. 建立新 Pages 專案，命名為 'coach-rocks-frontend'",
     "4. 使用 wrangler 部署：",
@@ -389,20 +389,20 @@ wrangler pages deploy dist --project-name=coach-rocks-frontend
 ```json
 {
   "operation": "migrate_d1_database",
-  "description": "將 D1 資料庫遷移至 Katherine 的帳戶",
+  "description": "將 D1 資料庫遷移至 使用者 的帳戶",
   "automation_type": "hybrid",
   "priority": "P0",
   "steps": [
     "選項 A（推薦）: 使用 Cloudflare Backup & Restore",
     "  1. 登入 Gamepig 的 Cloudflare Dashboard",
     "  2. 導出 D1 資料庫備份",
-    "  3. Katherine 登入她的 Cloudflare Dashboard",
+    "  3. 使用者 登入她的 Cloudflare Dashboard",
     "  4. 建立新 D1 資料庫：coachdb",
     "  5. 導入備份",
     "",
     "選項 B: 使用 SQL 匯出/匯入",
     "  1. AI 執行：wrangler d1 export DB backup.sql",
-    "  2. Katherine 執行：wrangler d1 import coachdb backup.sql",
+    "  2. 使用者 執行：wrangler d1 import coachdb backup.sql",
     "",
     "預期結果: 新資料庫獲得新的 database_id（UUID）"
   ],
@@ -473,11 +473,11 @@ cd backend
 
 # 設置新的 Client ID
 wrangler secret put GOOGLE_CLIENT_ID
-# 輸入: [Katherine 的新 Client ID]
+# 輸入: [使用者 的新 Client ID]
 
 # 設置新的 Client Secret
 wrangler secret put GOOGLE_CLIENT_SECRET
-# 輸入: [Katherine 的新 Client Secret]
+# 輸入: [使用者 的新 Client Secret]
 
 # 設置新的 Redirect URI
 wrangler secret put GOOGLE_REDIRECT_URI
@@ -1174,7 +1174,7 @@ curl -X POST https://coach-backend.katherine84522.workers.dev/api/test-db \
   ],
   "expected": {
     "user_email": "katherine84522@gmail.com",
-    "user_name": "Katherine（或適當名稱）",
+    "user_name": "使用者（或適當名稱）",
     "last_commit": "應顯示最後一次提交"
   }
 }
@@ -1239,9 +1239,9 @@ git log --oneline -1
   "scenario": "D1 資料庫遷移失敗，需要恢復",
   "steps": [
     "1. 檢查 Gamepig 的 Cloudflare Dashboard - D1 coachdb 是否仍存在",
-    "2. 在 Katherine 的帳戶中建立新 D1 資料庫：coachdb_backup",
+    "2. 在 使用者 的帳戶中建立新 D1 資料庫：coachdb_backup",
     "3. 從 Gamepig 帳戶重新匯出資料庫",
-    "4. 導入到 Katherine 帳戶",
+    "4. 導入到 使用者 帳戶",
     "5. 更新 wrangler.jsonc 中的 database_id",
     "6. 重新部署"
   ],
@@ -1261,7 +1261,7 @@ git log --oneline -1
 按以下順序執行操作，確保依賴關係正確：
 
 ```
-Phase 1: 準備（Katherine）
+Phase 1: 準備（使用者）
   ├─ 獲取新 Account ID
   ├─ 建立 Cloudflare Workers (coach-backend)
   └─ 建立 Cloudflare Pages (coach-rocks-frontend)
@@ -1299,9 +1299,9 @@ Phase 6: 部署
 
 | 決策點 | 選項 | 影響 |
 |--------|------|------|
-| **D1 資料庫遷移** | A: 遷移（複製所有數據） | 保留現有數據，Katherine 帳戶有完整備份 |
+| **D1 資料庫遷移** | A: 遷移（複製所有數據） | 保留現有數據，使用者 帳戶有完整備份 |
 | | B: 新建空資料庫 | 需要重新初始化，現有數據遺失 |
-| **代碼庫所有權** | A: 轉移給 Katherine（推薦） | 一個明確的所有者 |
+| **代碼庫所有權** | A: 轉移給 使用者（推薦） | 一個明確的所有者 |
 | | B: 共同擁有 | 可能導致權限問題 |
 | **DNS/自訂域名** | A: 保持指向舊帳戶 | 需要額外配置 |
 | | B: 轉移到新帳戶 | 更乾淨的結構 |
@@ -1333,7 +1333,7 @@ Phase 6: 部署
 原因: database_id 未更新或資料庫未遷移
 解決:
   1. 驗證 database_id 是否正確
-  2. 檢查資料庫是否存在於 Katherine 的帳戶
+  2. 檢查資料庫是否存在於 使用者 的帳戶
   3. 重新執行遷移
 ```
 
@@ -1367,7 +1367,7 @@ Phase 6: 部署
 
 - [ ] 已備份所有關鍵配置檔案
 - [ ] 已記錄所有舊值（便於回滾）
-- [ ] 已驗證 Katherine 帳戶有完整的 Cloudflare 權限
+- [ ] 已驗證 使用者 帳戶有完整的 Cloudflare 權限
 - [ ] 已複製所有 API 密鑰和秘密
 - [ ] 已記錄所有 Secrets（用於對比）
 - [ ] Git 分支已正確（應在 main/master）
@@ -1378,7 +1378,7 @@ Phase 6: 部署
 ## 📞 聯絡方式
 
 - **Gamepig**: gamepig1976@gmail.com（舊帳戶）
-- **Katherine**: katherine84522@gmail.com（新帳戶）
+- **使用者**: katherine84522@gmail.com（新帳戶）
 - **Cloudflare Support**: https://support.cloudflare.com
 
 ---
