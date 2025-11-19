@@ -42,6 +42,7 @@ import { AuthGoogleInit } from "./endpoints/authGoogleInit";
 import { AuthGoogleNew } from "./endpoints/authGoogleNew";
 import { LoginNew } from "./endpoints/loginNew";
 import { RegisterNew } from "./endpoints/registerNew";
+import { Health } from "./endpoints/health";
 
 // Start a Hono app
 const app = new Hono<{ Bindings: Env }>();
@@ -203,15 +204,7 @@ openapi.post("/api/users/complete-onboarding", CompleteOnboarding);
 openapi.get("/api/dashboard", Dashboard);
 
 // Health check endpoint
-openapi.get("/api/health", {
-  async handle(request: Request, env: any) {
-    return Response.json({
-      status: "ok",
-      timestamp: new Date().toISOString(),
-      service: "coach-backend"
-    })
-  }
-});
+openapi.get("/api/health", Health);
 
 // Test endpoints
 openapi.get("/api/test-session-auth", TestSessionAuth);
