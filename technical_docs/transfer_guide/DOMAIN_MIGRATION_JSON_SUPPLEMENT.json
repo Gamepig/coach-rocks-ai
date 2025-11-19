@@ -1,0 +1,338 @@
+{
+  "metadata": {
+    "title": "CoachRocks AI - 域名轉移 JSON 補充指令",
+    "version": "1.0",
+    "created": "2025-11-19",
+    "purpose": "補充 AI_TRANSFER_INSTRUCTIONS.json，用於 Phase 6 域名轉移至 coachrocks.com",
+    "note": "此文件應整合到主 JSON 的 phases.phase_6 中"
+  },
+  "global_config_additions": {
+    "domain_migration": {
+      "old_backend_domain": "coach-backend.katherine84522.workers.dev",
+      "new_backend_domain": "api.coachrocks.com",
+      "old_frontend_domain": "coach-rocks-frontend.pages.dev",
+      "new_frontend_domain": "coachrocks.com",
+      "custom_domain": "coachrocks.com",
+      "dns_a_record": "@",
+      "dns_cname_api": "api"
+    }
+  },
+  "phase_6": {
+    "name": "域名轉移至 coachrocks.com（正式上線）",
+    "execution_by": "混合（Katherine 手動購買和配置，AI 自動化代碼更新）",
+    "prerequisite": "Phase 5 驗證完全通過，應用穩定運行",
+    "duration_estimate": "1-2 天（DNS 傳播 24-48 小時）",
+    "steps": [
+      {
+        "step_id": "P6_S1",
+        "name": "購買並驗證域名",
+        "type": "manual",
+        "priority": "P0",
+        "executed_by": "Katherine",
+        "instructions": "1. 通過 Cloudflare Registrar 或其他註冊商購買 coachrocks.com 域名\n2. 配置 Nameservers 指向 Cloudflare\n3. 在 Cloudflare Dashboard 添加域名\n4. 驗證域名所有權（等待 5-30 分鐘驗證完成）",
+        "verification": "Cloudflare Dashboard 顯示 'Active Nameserver'，DNS 記錄標籤頁可編輯"
+      },
+      {
+        "step_id": "AUTO_009",
+        "operation": "batch_replace_domain_names",
+        "type": "automated",
+        "priority": "P0",
+        "executed_by": "AI",
+        "description": "批量更新所有代碼、配置、環境變數中的域名",
+        "replacements": [
+          {
+            "old": "coach-backend.katherine84522.workers.dev",
+            "new": "api.coachrocks.com",
+            "scope": "代碼、配置、腳本、環境變數"
+          },
+          {
+            "old": "coach-rocks-frontend.pages.dev",
+            "new": "coachrocks.com",
+            "scope": "代碼、配置、環境變數"
+          },
+          {
+            "old": "'https://coach-rocks-frontend.pages.dev'",
+            "new": "'https://coachrocks.com'",
+            "scope": "CORS 配置"
+          }
+        ],
+        "bash_commands": [
+          "# 替換後端域名",
+          "find . -type f \\( -name '*.ts' -o -name '*.tsx' -o -name '*.jsx' -o -name '*.js' -o -name '*.jsonc' -o -name '.dev.vars' -o -name '.env.*' -o -name '*.sh' \\) ! -path '*./.git/*' ! -path '*/node_modules/*' ! -path '*/.wrangler/*' -exec sed -i '' 's|coach-backend\\.katherine84522\\.workers\\.dev|api.coachrocks.com|g' {} +",
+          "",
+          "# 替換前端域名",
+          "find . -type f \\( -name '*.ts' -o -name '*.tsx' -o -name '*.jsx' -o -name '*.js' -o -name '*.jsonc' -o -name '.env.*' \\) ! -path '*./.git/*' ! -path '*/node_modules/*' -exec sed -i '' 's|coach-rocks-frontend\\.pages\\.dev|coachrocks.com|g' {} +",
+          "",
+          "# 更新 CORS 配置",
+          "find . -type f -name '*.ts' ! -path '*/node_modules/*' -exec sed -i '' \"s|'https://coach-rocks-frontend.pages.dev'|'https://coachrocks.com'|g\" {} +",
+          "",
+          "# 驗證替換",
+          "grep -r 'coach-backend.katherine84522.workers.dev\\|coach-rocks-frontend.pages.dev' --include='*.ts' --include='*.js' . --exclude-dir='.git' --exclude-dir='node_modules' 2>/dev/null || echo '✅ 全部已更新'"
+        ],
+        "verification_command": "grep -r 'coach-backend.katherine84522.workers.dev\\|coach-rocks-frontend.pages.dev' --include='*.ts' --include='*.js' . --exclude-dir='.git' --exclude-dir='node_modules' 2>/dev/null || echo '✅ 無遺漏'",
+        "expected_result": "返回 '✅ 無遺漏'，表示沒有遺漏的舊域名"
+      },
+      {
+        "step_id": "AUTO_010",
+        "operation": "update_google_oauth_domain",
+        "type": "hybrid",
+        "priority": "P0",
+        "executed_by": "AI（設置 Secret），Katherine（Google Console 更新）",
+        "description": "更新 Google OAuth Redirect URI 為新的 api.coachrocks.com",
+        "bash_commands": [
+          "cd backend",
+          "",
+          "# AI 設置新的 Redirect URI Secret",
+          "echo 'https://api.coachrocks.com/api/auth/google/callback' | wrangler secret put GOOGLE_REDIRECT_URI",
+          "",
+          "# 驗證",
+          "wrangler secret list | grep GOOGLE_REDIRECT"
+        ],
+        "manual_steps": [
+          "1. 登入 https://console.cloud.google.com/",
+          "2. 選擇 coach-rocks 專案",
+          "3. 前往 'Credentials' → OAuth 2.0 Client IDs",
+          "4. 編輯現有 Client ID (Web application)",
+          "5. 在 'Authorized redirect URIs' 中：",
+          "   - 移除舊的：https://coach-backend.katherine84522.workers.dev/api/auth/google/callback",
+          "   - 新增：https://api.coachrocks.com/api/auth/google/callback",
+          "6. 點擊 'Save'",
+          "7. 測試：訪問 https://api.coachrocks.com/api/auth/google/init"
+        ],
+        "verification": "訪問 https://api.coachrocks.com/api/auth/google/init 應顯示 Google 登入頁面"
+      },
+      {
+        "step_id": "MANUAL_DOMAIN_002",
+        "name": "配置 Workers 自訂域名",
+        "type": "manual",
+        "priority": "P0",
+        "executed_by": "Katherine",
+        "instructions": "在 Cloudflare 將 api.coachrocks.com 綁定到 coach-backend Worker",
+        "detailed_steps": [
+          "1. 登入 https://dash.cloudflare.com",
+          "2. 選擇 coachrocks.com 域名",
+          "3. 前往 'Workers & Pages' → 選擇 'coach-backend' Worker",
+          "4. 進入 Worker 的 'Settings' → 'Domains & Routes'",
+          "5. 點擊 'Add Route'",
+          "6. 設置:",
+          "   Route Pattern: api.coachrocks.com/*",
+          "   Worker: coach-backend",
+          "7. 點擊 'Save'",
+          "8. 驗證：訪問 https://api.coachrocks.com/api/health",
+          "9. 應返回 { \"status\": \"ok\" }",
+          "10. SSL/TLS 配置：",
+          "    - 前往 'SSL/TLS' → 'Edge Certificates'",
+          "    - 應顯示 'Full' 加密",
+          "    - 等待 24 小時證書完全頒發"
+        ],
+        "dns_configuration": {
+          "type": "CNAME",
+          "name": "api",
+          "target": "coach-backend.workers.dev",
+          "proxy_status": "Proxied (橙色雲)",
+          "note": "Cloudflare 通常自動配置"
+        },
+        "verification": "curl -I https://api.coachrocks.com/api/health 應返回 HTTP 200"
+      },
+      {
+        "step_id": "MANUAL_DOMAIN_003",
+        "name": "配置 Pages 自訂域名",
+        "type": "manual",
+        "priority": "P0",
+        "executed_by": "Katherine",
+        "instructions": "在 Cloudflare 將 coachrocks.com 綁定到 coach-rocks-frontend Pages",
+        "detailed_steps": [
+          "1. 登入 https://dash.cloudflare.com",
+          "2. 選擇 coachrocks.com 域名",
+          "3. 前往 'Workers & Pages' → 'Pages' → 'coach-rocks-frontend'",
+          "4. 選擇 'Custom domains' 標籤",
+          "5. 點擊 'Set up a custom domain'",
+          "6. 輸入 'coachrocks.com'（根域名）",
+          "7. Cloudflare 自動驗證 DNS 和配置",
+          "8. 驗證：訪問 https://coachrocks.com",
+          "9. 應顯示應用首頁",
+          "10. 可選：添加 www 子域名",
+          "    - 重複步驟 5-7，輸入 'www.coachrocks.com'",
+          "    - 可設置重定向至 coachrocks.com"
+        ],
+        "dns_configuration": {
+          "type": "CNAME",
+          "name": "@",
+          "target": "coach-rocks-frontend.pages.dev",
+          "proxy_status": "Proxied (橙色雲)",
+          "note": "Cloudflare 通常自動配置"
+        },
+        "verification": "訪問 https://coachrocks.com 應顯示應用首頁"
+      },
+      {
+        "step_id": "MANUAL_DOMAIN_004",
+        "name": "配置域名重定向",
+        "type": "manual",
+        "priority": "P1",
+        "executed_by": "Katherine",
+        "instructions": "設置舊 workers.dev 域名自動重定向到新域名",
+        "options": [
+          {
+            "option": "方案 A: Cloudflare Redirect Rules（推薦）",
+            "steps": [
+              "1. 登入 Cloudflare Dashboard → coachrocks.com 域名",
+              "2. 前往 'Rules' → 'Redirect Rules'",
+              "3. 建立規則 1（後端重定向）:",
+              "   - Incoming request matches: coach-backend.katherine84522.workers.dev",
+              "   - Then: Dynamic Redirect",
+              "   - Target: https://api.coachrocks.com{request_uri}",
+              "   - Status code: 301 (Permanent Redirect)",
+              "4. 建立規則 2（前端重定向，可選）:",
+              "   - Incoming request matches: coach-rocks-frontend.pages.dev",
+              "   - Then: Dynamic Redirect",
+              "   - Target: https://coachrocks.com{request_uri}",
+              "   - Status code: 301",
+              "5. 測試重定向:",
+              "   curl -L https://coach-backend.katherine84522.workers.dev/api/health",
+              "   應最終返回 api.coachrocks.com 的響應"
+            ]
+          },
+          {
+            "option": "方案 B: Workers 代碼重定向（如方案 A 不可用）",
+            "steps": [
+              "在 backend/src/index.ts 最開始添加重定向邏輯：",
+              "",
+              "export default {",
+              "  async fetch(request: Request, env: Env) {",
+              "    const url = new URL(request.url);",
+              "",
+              "    if (url.hostname === 'coach-backend.katherine84522.workers.dev') {",
+              "      url.hostname = 'api.coachrocks.com';",
+              "      return Response.redirect(url.toString(), 301);",
+              "    }",
+              "",
+              "    // 繼續正常處理...",
+              ""
+            ]
+          }
+        ]
+      },
+      {
+        "step_id": "AUTO_011",
+        "operation": "verify_domain_migration",
+        "type": "automated",
+        "priority": "P0",
+        "executed_by": "AI",
+        "description": "驗證域名轉移的完整性和正確性",
+        "bash_commands": [
+          "# 1️⃣ 檢查是否有遺漏的舊域名",
+          "echo '=== 檢查舊域名遺漏 ===' && \\",
+          "grep -r 'katherine84522.workers.dev\\|pages.dev' \\",
+          "  --include='*.ts' --include='*.js' --include='*.jsonc' --include='.env.*' \\",
+          "  . --exclude-dir='.git' --exclude-dir='node_modules' --exclude-dir='technical_docs' 2>/dev/null || echo '✅ 無遺漏'",
+          "",
+          "# 2️⃣ 驗證新域名已使用",
+          "echo '' && echo '=== 驗證新域名配置 ===' && \\",
+          "grep -r 'api.coachrocks.com\\|coachrocks.com' \\",
+          "  --include='*.ts' --include='*.js' \\",
+          "  . --exclude-dir='.git' --exclude-dir='node_modules' 2>/dev/null | head -15",
+          "",
+          "# 3️⃣ 驗證環境變數",
+          "echo '' && echo '=== 驗證環境變數 ===' && \\",
+          "cd backend && \\",
+          "echo 'GOOGLE_REDIRECT_URI:' && wrangler secret list 2>/dev/null | grep GOOGLE_REDIRECT && \\",
+          "echo 'BACKEND_URL:' && wrangler secret list 2>/dev/null | grep BACKEND_URL && \\",
+          "echo 'FRONTEND_URL:' && wrangler secret list 2>/dev/null | grep FRONTEND_URL",
+          "",
+          "# 4️⃣ 連接性測試",
+          "echo '' && echo '=== 連接性測試 ===' && \\",
+          "echo -n 'API: ' && curl -s -o /dev/null -w '%{http_code}\\n' https://api.coachrocks.com/api/health && \\",
+          "echo -n 'Frontend: ' && curl -s -o /dev/null -w '%{http_code}\\n' https://coachrocks.com && \\",
+          "echo -n 'OAuth: ' && curl -s -o /dev/null -w '%{http_code}\\n' https://api.coachrocks.com/api/auth/google/init"
+        ],
+        "expected_results": [
+          "✅ 無遺漏（或僅在 technical_docs 中出現舊域名）",
+          "✅ 新域名在多個文件中出現",
+          "✅ GOOGLE_REDIRECT_URI 設置為新的 Redirect URI",
+          "✅ 所有連接性測試返回 HTTP 200"
+        ]
+      }
+    ]
+  },
+  "deployment_checklist": {
+    "before_domain_migration": [
+      "✅ Phase 5 驗證完全通過",
+      "✅ 應用在 katherine84522 帳戶穩定運行 24+ 小時",
+      "✅ 沒有報告的用戶問題"
+    ],
+    "domain_registration": [
+      "✅ coachrocks.com 域名已購買",
+      "✅ Nameservers 指向 Cloudflare",
+      "✅ Cloudflare Dashboard 顯示 'Active Nameserver'"
+    ],
+    "code_updates": [
+      "✅ AUTO_009: 所有域名已更新",
+      "✅ 代碼中無舊 workers.dev 或 pages.dev 引用",
+      "✅ CORS 配置已更新"
+    ],
+    "oauth_configuration": [
+      "✅ AUTO_010: Google Redirect URI Secret 已更新",
+      "✅ Google Console: Redirect URI 已更新",
+      "✅ 測試 Google 登入流程成功"
+    ],
+    "cloudflare_configuration": [
+      "✅ MANUAL_DOMAIN_002: Workers 自訂域名已配置",
+      "✅ MANUAL_DOMAIN_003: Pages 自訂域名已配置",
+      "✅ MANUAL_DOMAIN_004: 重定向規則已配置",
+      "✅ SSL/TLS 証書已頒發（24 小時後）"
+    ],
+    "verification": [
+      "✅ AUTO_011: 域名驗證通過",
+      "✅ 舊域名重定向正常運作",
+      "✅ 新域名訪問成功",
+      "✅ API 和前端都可通過新域名訪問"
+    ],
+    "post_migration": [
+      "✅ 通知用戶應使用新域名 coachrocks.com",
+      "✅ 監控舊域名訪問日誌（應顯示 301 重定向）",
+      "✅ 待機 72 小時檢查是否有問題報告"
+    ]
+  },
+  "rollback_scenarios": [
+    {
+      "scenario": "DNS 配置失敗，域名無法訪問",
+      "symptoms": "訪問 coachrocks.com 或 api.coachrocks.com 返回 ERR_NAME_NOT_RESOLVED",
+      "solution": [
+        "1. 檢查 Cloudflare Dashboard DNS 記錄是否正確",
+        "2. 驗證 Nameservers 是否指向 Cloudflare",
+        "3. 等待 DNS 傳播（最多 24-48 小時）",
+        "4. 用戶可臨時使用舊的 katherine84522.workers.dev 域名"
+      ]
+    },
+    {
+      "scenario": "SSL 証書未頒發，HTTPS 連接失敗",
+      "symptoms": "curl 返回 ERR_SSL_VERSION_OR_CIPHER_MISMATCH",
+      "solution": [
+        "1. Cloudflare 自動管理，通常需要 24 小時",
+        "2. 前往 SSL/TLS → Edge Certificates 檢查狀態",
+        "3. 如証書長期未頒發，聯系 Cloudflare 支持",
+        "4. 用戶可臨時使用舊的 katherine84522.workers.dev 域名"
+      ]
+    },
+    {
+      "scenario": "OAuth Redirect URI 不匹配",
+      "symptoms": "登入時返回 redirect_uri_mismatch 錯誤",
+      "solution": [
+        "1. 確認 Google Console 中的 Redirect URI 為 https://api.coachrocks.com/api/auth/google/callback",
+        "2. 確認 Wrangler Secret GOOGLE_REDIRECT_URI 已正確設置",
+        "3. 清空瀏覽器 Cookie 重新登入",
+        "4. 如仍有問題，回滾至 katherine84522 後端進行診斷"
+      ]
+    },
+    {
+      "scenario": "需要完全回滾（緊急情況）",
+      "solution": [
+        "1. 將前端和後端流量重定向回 katherine84522 帳戶",
+        "2. 恢復舊的環境變數和配置",
+        "3. 通知用戶重新訪問舊域名",
+        "4. 回滾命令：git checkout HEAD~ 後重新部署",
+        "5. 診斷問題後再次嘗試轉移"
+      ]
+    }
+  ]
+}

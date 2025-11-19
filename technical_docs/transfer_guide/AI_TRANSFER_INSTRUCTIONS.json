@@ -1,0 +1,406 @@
+{
+  "metadata": {
+    "title": "CoachRocks AI - 專案轉移指令集",
+    "version": "1.0",
+    "created": "2025-11-19",
+    "source": "PROJECT_OWNERSHIP_TRANSFER_GUIDE.md",
+    "description": "JSON 格式的 AI 可執行指令集，用於自動化專案所有權轉移"
+  },
+  "global_config": {
+    "old_owner": "gamepig1976@gmail.com",
+    "new_owner": "katherine84522@gmail.com",
+    "old_backend_url": "https://coach-backend.gamepig1976.workers.dev",
+    "new_backend_url": "https://coach-backend.katherine84522.workers.dev",
+    "old_account_id": "9288c023577aa2f6ce20582b6c4bdda0",
+    "new_account_id": "[WAITING_FOR_INPUT]",
+    "old_database_id": "d15ec66a-762c-40a2-bc8e-d64a1c8eb440",
+    "new_database_id": "[WAITING_FOR_INPUT]"
+  },
+  "phases": {
+    "phase_1": {
+      "name": "Cloudflare 帳戶準備",
+      "execution_by": "Katherine（手動）",
+      "steps": [
+        {
+          "step_id": "P1_S1",
+          "name": "獲取 Cloudflare Account ID",
+          "type": "manual",
+          "instructions": "1. 登入 https://dash.cloudflare.com\n2. 複製右上角的 Account ID\n3. 提供給 AI",
+          "output_field": "new_account_id"
+        },
+        {
+          "step_id": "P1_S2",
+          "name": "建立 Cloudflare Workers",
+          "type": "manual",
+          "instructions": "1. 建立新 Worker：coach-backend\n2. 使用 wrangler deploy 部署\n3. 驗證 URL 為：https://coach-backend.katherine84522.workers.dev"
+        },
+        {
+          "step_id": "P1_S3",
+          "name": "建立 Cloudflare Pages",
+          "type": "manual",
+          "instructions": "1. 建立新 Pages 專案：coach-rocks-frontend\n2. 使用 wrangler pages deploy 部署前端\n3. 驗證 URL 為：https://coach-rocks-frontend.pages.dev"
+        }
+      ]
+    },
+    "phase_2": {
+      "name": "自動化 URL 和配置更新",
+      "execution_by": "AI",
+      "steps": [
+        {
+          "step_id": "AUTO_001",
+          "operation": "batch_replace_backend_url",
+          "priority": "P0",
+          "description": "批量更新所有檔案中的後端 URL",
+          "bash_command": "find . -type f \\( -name '*.ts' -o -name '*.tsx' -o -name '*.jsx' -o -name '*.js' -o -name '*.jsonc' -o -name '.dev.vars' -o -name '.env.*' -o -name '*.sh' \\) ! -path '*./.git/*' ! -path '*/node_modules/*' ! -path '*/.wrangler/*' -exec sed -i '' 's|https://coach-backend\\.gamepig1976\\.workers\\.dev|https://coach-backend.katherine84522.workers.dev|g' {} +",
+          "verification_command": "grep -r 'coach-backend.gamepig1976' --include='*.ts' --include='*.js' --include='*.jsonc' --include='.dev.vars' --include='.env.*' . 2>/dev/null | grep -v technical_docs | wc -l",
+          "expected_result": "0"
+        },
+        {
+          "step_id": "AUTO_002",
+          "operation": "update_git_config",
+          "priority": "P0",
+          "description": "更新 Git 用戶郵箱",
+          "bash_command": "git config user.email 'katherine84522@gmail.com'",
+          "verification_command": "git config user.email",
+          "expected_result": "katherine84522@gmail.com"
+        },
+        {
+          "step_id": "AUTO_003",
+          "operation": "update_wrangler_account_id",
+          "priority": "P0",
+          "description": "更新 backend/wrangler.jsonc 中的 account_id",
+          "requires_input": "new_account_id",
+          "bash_command": "sed -i '' 's/\"account_id\": \"9288c023577aa2f6ce20582b6c4bdda0\"/\"account_id\": \"${new_account_id}\"/g' backend/wrangler.jsonc",
+          "verification_command": "grep '\"account_id\"' backend/wrangler.jsonc",
+          "note": "需要在 P1_S1 後執行"
+        },
+        {
+          "step_id": "AUTO_004",
+          "operation": "update_script_emails",
+          "priority": "P1",
+          "description": "更新腳本中的郵箱",
+          "bash_command": "find scripts -name '*.sh' -exec sed -i '' 's/gamepig1976@gmail\\.com/katherine84522@gmail.com/g' {} +",
+          "verification_command": "grep -r 'gamepig1976@gmail.com' scripts/ 2>/dev/null | wc -l",
+          "expected_result": "0"
+        },
+        {
+          "step_id": "AUTO_005",
+          "operation": "verify_no_remnants",
+          "priority": "P0",
+          "description": "驗證沒有遺漏的舊值",
+          "bash_commands": [
+            "echo '=== 檢查 gamepig1976 ==='; grep -r 'gamepig1976' --include='*.ts' --include='*.js' --include='*.jsonc' --include='.dev.vars' --include='.env.*' . --exclude-dir='.git' --exclude-dir='node_modules' --exclude-dir='technical_docs' 2>/dev/null || echo '✅ 未找到'",
+            "echo ''; echo '=== 檢查舊 Account ID ==='; grep -r '9288c023577aa2f6ce20582b6c4bdda0' --include='*.jsonc' --exclude-dir='.git' . 2>/dev/null || echo '✅ 未找到'",
+            "echo ''; echo '=== 檢查舊 Database ID ==='; grep -r 'd15ec66a-762c-40a2-bc8e-d64a1c8eb440' --include='*.jsonc' --exclude-dir='.git' . 2>/dev/null || echo '✅ 未找到'"
+          ],
+          "expected_result": "所有檢查都返回 ✅"
+        }
+      ]
+    },
+    "phase_3": {
+      "name": "Google OAuth 和 Secrets 配置",
+      "execution_by": "混合（Katherine 提供信息，AI 執行）",
+      "steps": [
+        {
+          "step_id": "P3_S1",
+          "operation": "create_google_oauth_credentials",
+          "priority": "P0",
+          "type": "manual",
+          "description": "在 Google Console 建立新的 OAuth 憑證",
+          "instructions": "1. 前往 https://console.cloud.google.com/\n2. 建立新 OAuth 2.0 Client ID\n3. Authorized redirect URIs 加入：https://coach-backend.katherine84522.workers.dev/api/auth/google/callback\n4. 獲取 Client ID 和 Client Secret",
+          "output_fields": [
+            "google_client_id",
+            "google_client_secret"
+          ]
+        },
+        {
+          "step_id": "AUTO_006",
+          "operation": "update_google_oauth_secrets",
+          "priority": "P0",
+          "requires_input": [
+            "google_client_id",
+            "google_client_secret"
+          ],
+          "description": "更新 Wrangler 中的 Google OAuth Secrets",
+          "bash_commands": [
+            "cd backend",
+            "echo '${google_client_id}' | wrangler secret put GOOGLE_CLIENT_ID",
+            "echo '${google_client_secret}' | wrangler secret put GOOGLE_CLIENT_SECRET",
+            "echo 'https://coach-backend.katherine84522.workers.dev/api/auth/google/callback' | wrangler secret put GOOGLE_REDIRECT_URI"
+          ],
+          "verification_command": "cd backend && wrangler secret list | grep -E 'GOOGLE|REDIRECT'",
+          "note": "需要在 P3_S1 後執行"
+        },
+        {
+          "step_id": "AUTO_007",
+          "operation": "copy_other_secrets",
+          "priority": "P1",
+          "description": "複製其他必要的 Secrets（從舊帳戶）",
+          "instructions": "AI 需要從 backend/.dev.vars 讀取以下值並設置到新帳戶：\n- OPENAI_API_KEY\n- PERPLEXITY_API_KEY\n- SERPER_API_KEY\n- JWT_SECRET\n- RESEND_API_KEY",
+          "bash_commands": [
+            "cd backend",
+            "# 讀取舊 .dev.vars 中的 secrets",
+            "grep -E '^(OPENAI|PERPLEXITY|SERPER|JWT|RESEND)' .dev.vars | while IFS='=' read key value; do",
+            "  wrangler secret put $key <<< $value",
+            "done",
+            "# 設置應用 URL",
+            "echo 'https://coach-backend.katherine84522.workers.dev' | wrangler secret put BACKEND_URL",
+            "echo 'https://coach-rocks-frontend.pages.dev' | wrangler secret put FRONTEND_URL",
+            "echo 'noreply@coachrocks.com' | wrangler secret put FROM_EMAIL",
+            "echo 'CoachRocks AI' | wrangler secret put APP_NAME"
+          ],
+          "verification_command": "cd backend && wrangler secret list"
+        },
+        {
+          "step_id": "AUTO_008",
+          "operation": "configure_resend_email_service",
+          "priority": "P1",
+          "description": "配置 RESEND 郵件服務",
+          "automation_type": "hybrid",
+          "resend_config": {
+            "api_key": "[使用舊帳戶的 backend/.dev.vars 中的 RESEND_API_KEY]",
+            "development": {
+              "from_email": "onboarding@resend.dev",
+              "requires_verification": false,
+              "timing": "立即"
+            },
+            "production": {
+              "from_email": "noreply@coachrocks.com",
+              "requires_verification": true,
+              "timing": "Phase 6 後執行"
+            }
+          },
+          "bash_commands": [
+            "cd backend",
+            "# 設置 RESEND_API_KEY",
+            "# 粘貼舊帳戶的 RESEND_API_KEY（見 backend/.dev.vars）",
+            "# 驗證設置",
+            "wrangler secret list | grep RESEND",
+            "# 測試郵件服務",
+            "echo '📧 测试 RESEND 郵件服務（可选）' && node test-resend-email.js test@example.com 2>/dev/null || echo '⚠️ 郵件測試可選，開發環境可跳過'"
+          ],
+          "verification_command": "cd backend && wrangler secret list | grep -E 'RESEND|FROM_EMAIL'",
+          "manual_steps": [
+            {
+              "step": "1️⃣ RESEND 開發環境（立即執行）",
+              "action": "自動設置",
+              "details": "使用測試域名 onboarding@resend.dev，不需驗證，可直接發送郵件"
+            },
+            {
+              "step": "2️⃣ RESEND 生產環境驗證（Phase 6 執行）",
+              "action": "手動在 RESEND Dashboard",
+              "details": "1. 登入 https://resend.com\n2. Domains → Add Domain → 輸入 coachrocks.com\n3. 複製 DNS 記錄到 Cloudflare Dashboard → coachrocks.com → DNS\n4. 等待驗證完成（5-30 分鐘）\n5. 驗證後使用 noreply@coachrocks.com 發送郵件"
+            }
+          ],
+          "note": "RESEND_API_KEY 已在 AUTO_007 中作為 Secrets 複製，此步驟提供額外的測試和驗證"
+        }
+      ]
+    },
+    "phase_4": {
+      "name": "資料庫遷移",
+      "execution_by": "混合",
+      "steps": [
+        {
+          "step_id": "P4_S1",
+          "operation": "migrate_d1_database",
+          "priority": "P0",
+          "type": "hybrid",
+          "description": "遷移 D1 資料庫至 Katherine 帳戶",
+          "options": [
+            {
+              "option": "A（推薦）",
+              "method": "使用 Wrangler export/import",
+              "steps": [
+                "1. AI 執行：cd backend && wrangler d1 export coachdb > backup.sql",
+                "2. 轉移 backup.sql 至 Katherine",
+                "3. Katherine 建立新資料庫：coachdb",
+                "4. AI 執行：wrangler d1 import coachdb backup.sql",
+                "5. 記錄新的 database_id（從 Katherine 帳戶）",
+                "6. AI 更新 wrangler.jsonc 中的 database_id"
+              ]
+            },
+            {
+              "option": "B",
+              "method": "新建空資料庫（快速但會遺失數據）",
+              "steps": [
+                "1. Katherine 在 Cloudflare 建立新 D1：coachdb",
+                "2. 記錄新的 database_id",
+                "3. AI 更新 wrangler.jsonc",
+                "4. 初始化資料庫結構"
+              ]
+            }
+          ]
+        },
+        {
+          "step_id": "AUTO_008",
+          "operation": "update_database_id",
+          "priority": "P0",
+          "requires_input": "new_database_id",
+          "description": "更新 wrangler.jsonc 中的 database_id",
+          "bash_command": "sed -i '' 's/\"database_id\": \"d15ec66a-762c-40a2-bc8e-d64a1c8eb440\"/\"database_id\": \"${new_database_id}\"/g' backend/wrangler.jsonc",
+          "verification_command": "grep '\"database_id\"' backend/wrangler.jsonc",
+          "note": "需要在 P4_S1 後執行"
+        }
+      ]
+    },
+    "phase_5": {
+      "name": "驗證和部署",
+      "execution_by": "AI",
+      "steps": [
+        {
+          "step_id": "VERIFY_001",
+          "operation": "verify_code_clean",
+          "priority": "P0",
+          "description": "驗證代碼中無硬編碼舊值",
+          "bash_commands": [
+            "echo '=== 檢查舊域名 ==='; grep -r 'gamepig1976' --include='*.ts' --include='*.js' --include='*.jsonc' --include='.dev.vars' . --exclude-dir='.git' --exclude-dir='node_modules' --exclude-dir='technical_docs' 2>/dev/null | wc -l",
+            "echo '=== 檢查舊 Account ID ==='; grep -r '9288c023577aa2f6ce20582b6c4bdda0' --include='*.ts' --include='*.jsonc' . --exclude-dir='.git' 2>/dev/null | wc -l",
+            "echo '=== 檢查舊 Database ID ==='; grep -r 'd15ec66a-762c-40a2-bc8e-d64a1c8eb440' --include='*.jsonc' . --exclude-dir='.git' 2>/dev/null | wc -l"
+          ],
+          "expected_result": "所有返回 0"
+        },
+        {
+          "step_id": "VERIFY_002",
+          "operation": "verify_configs",
+          "priority": "P0",
+          "description": "驗證配置檔案正確",
+          "checks": [
+            {
+              "file": "backend/wrangler.jsonc",
+              "contains": "new_account_id",
+              "should_not_contain": "9288c023577aa2f6ce20582b6c4bdda0"
+            },
+            {
+              "file": "frontend/.env.production",
+              "contains": "https://coach-backend.katherine84522.workers.dev",
+              "should_not_contain": "gamepig1976"
+            },
+            {
+              "file": "backend/.dev.vars",
+              "contains": "https://coach-backend.katherine84522.workers.dev",
+              "should_not_contain": "gamepig1976"
+            }
+          ],
+          "bash_commands": [
+            "echo '=== wrangler.jsonc ==='; grep -E 'account_id|database_id|\"name\"' backend/wrangler.jsonc",
+            "echo ''; echo '=== .env.production ==='; cat frontend/.env.production",
+            "echo ''; echo '=== .dev.vars (關鍵項) ==='; grep -E '^(GOOGLE_REDIRECT|BACKEND_URL|FRONTEND_URL)' backend/.dev.vars"
+          ]
+        },
+        {
+          "step_id": "VERIFY_003",
+          "operation": "test_connectivity",
+          "priority": "P0",
+          "description": "測試後端連接性",
+          "tests": [
+            {
+              "name": "Health Check",
+              "command": "curl -s https://coach-backend.katherine84522.workers.dev/api/health | jq .",
+              "expected": "200 OK with status field"
+            },
+            {
+              "name": "Google OAuth Init",
+              "command": "curl -s -X GET 'https://coach-backend.katherine84522.workers.dev/api/auth/google/init' -H 'Content-Type: application/json' | jq .",
+              "expected": "200 OK with authorization_url"
+            }
+          ]
+        },
+        {
+          "step_id": "DEPLOY_001",
+          "operation": "deploy_backend",
+          "priority": "P0",
+          "description": "部署後端至 Cloudflare Workers",
+          "bash_commands": [
+            "cd backend",
+            "npm run deploy"
+          ],
+          "expected_result": "Successfully deployed to https://coach-backend.katherine84522.workers.dev"
+        },
+        {
+          "step_id": "DEPLOY_002",
+          "operation": "deploy_frontend",
+          "priority": "P0",
+          "description": "部署前端至 Cloudflare Pages",
+          "bash_commands": [
+            "cd frontend",
+            "npm run build",
+            "wrangler pages deploy dist --project-name=coach-rocks-frontend"
+          ],
+          "expected_result": "Successfully deployed to https://coach-rocks-frontend.pages.dev"
+        }
+      ]
+    }
+  },
+  "rollback_procedures": {
+    "scenario_1": {
+      "name": "後端部署失敗",
+      "steps": [
+        "git checkout backend/wrangler.jsonc",
+        "cd backend && wrangler deploy"
+      ]
+    },
+    "scenario_2": {
+      "name": "發現遺漏的舊值",
+      "command": "find . -type f \\( -name '*.ts' -o -name '*.js' \\) ! -path '*./.git/*' -exec sed -i '' 's/gamepig1976/katherine84522/g' {} + && cd backend && npm run deploy"
+    },
+    "scenario_3": {
+      "name": "資料庫遷移失敗",
+      "steps": [
+        "wrangler d1 export coachdb backup.sql",
+        "# 從備份恢復或重新遷移"
+      ]
+    }
+  },
+  "quick_reference": {
+    "files_to_modify": [
+      "backend/wrangler.jsonc",
+      "frontend/.env.production",
+      "backend/.dev.vars",
+      "scripts/*.sh"
+    ],
+    "critical_replacements": [
+      {
+        "old": "gamepig1976",
+        "new": "katherine84522",
+        "files": "多個"
+      },
+      {
+        "old": "https://coach-backend.gamepig1976.workers.dev",
+        "new": "https://coach-backend.katherine84522.workers.dev",
+        "files": "23+ 檔案"
+      },
+      {
+        "old": "9288c023577aa2f6ce20582b6c4bdda0",
+        "new": "[新 Account ID]",
+        "files": "backend/wrangler.jsonc"
+      },
+      {
+        "old": "d15ec66a-762c-40a2-bc8e-d64a1c8eb440",
+        "new": "[新 Database ID]",
+        "files": "backend/wrangler.jsonc"
+      }
+    ],
+    "ai_executable_operations": [
+      "AUTO_001 - 批量更新 URL",
+      "AUTO_002 - 更新 Git 配置",
+      "AUTO_003 - 更新 Account ID",
+      "AUTO_004 - 更新腳本郵箱",
+      "AUTO_005 - 驗證無遺漏",
+      "AUTO_006 - 更新 OAuth Secrets",
+      "AUTO_007 - 複製其他 Secrets",
+      "AUTO_008 - 更新 Database ID",
+      "VERIFY_001 - 代碼驗證",
+      "VERIFY_002 - 配置驗證",
+      "VERIFY_003 - 連接性測試",
+      "DEPLOY_001 - 部署後端",
+      "DEPLOY_002 - 部署前端"
+    ],
+    "manual_operations": [
+      "P1_S1 - 獲取 Cloudflare Account ID",
+      "P1_S2 - 建立 Workers",
+      "P1_S3 - 建立 Pages",
+      "P3_S1 - 建立 Google OAuth 憑證",
+      "P4_S1 - 資料庫遷移（選項 A 或 B）"
+    ]
+  }
+}

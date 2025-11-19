@@ -1,0 +1,284 @@
+# Cursor IDE Rules - CoachRocks AI 專案
+
+## 🎯 轉移專案特定規則
+
+### 📋 轉移進行中的核心規則
+
+**當 technical_docs/transfer_guide/ 中的檔案被編輯時**:
+- ✅ 確保參考的命令是最新的（驗證 bash 語法）
+- ✅ 更新所有相關文件的跨引用
+- ✅ 提醒檢查 AUTO_001 到 AUTO_011 的順序依賴
+- ❌ 不要修改 Phase 執行順序（除非有明確原因）
+
+### 🔒 敏感信息處理
+
+**轉移過程中處理敏感信息時**:
+- ⚠️ 提醒：不要在提交時洩露 API Keys 或 Secrets
+- ⚠️ 使用 `wrangler secret put` 而不是環境變數檔案
+- ⚠️ 提醒刪除臨時的敏感信息檔案（/tmp/transfer_info.txt）
+- ✅ 使用 [PLACEHOLDER] 表示敏感值
+
+### 🚀 自動化步驟檢查清單
+
+**執行 AUTO_001 - AUTO_011 時**:
+- ✅ 驗證備份已建立
+- ✅ 執行驗證命令確認無誤後才提交
+- ✅ 提醒查看文件修改統計
+- ❌ 不要跳過驗證步驟
+- ❌ 不要批量提交未驗證的改動
+
+### 📊 Phase 執行順序提醒
+
+**當執行不同 Phase 時的提醒**:
+
+```
+Phase 1: 由 Katherine 手動完成 (準備 Cloudflare 帳戶)
+         ↓ 需要：新 Account ID + Database ID
+Phase 2: 自動化 URL 更新 (3 個步驟)
+         ↓ 驗證：grep 檢查沒有遺漏
+Phase 3: Google OAuth + RESEND (3 個步驟)
+         ↓ 驗證：wrangler secret list
+Phase 4: 資料庫遷移 (2 個步驟)
+         ↓ 驗證：連接測試通過
+Phase 5: 完整驗證和測試 (3 個步驟)
+         ↓ 驗證：所有檢查清單通過
+Phase 6: 域名遷移 (5 個步驟 + 手動)
+         ↓ 驗證：curl 測試返回 200
+```
+
+**提醒**：如果跳到了不應該的 Phase，立即停止並提醒用戶。
+
+### ✅ 驗證命令快速參考
+
+**當用戶執行關鍵操作時，自動提醒執行驗證命令**:
+
+```
+Phase 2 完成後：
+grep -r 'gamepig1976' . --exclude-dir='.git' | wc -l
+
+Phase 3 完成後：
+cd backend && wrangler secret list | grep -E 'GOOGLE|RESEND'
+
+Phase 4 完成後：
+grep '"database_id"' backend/wrangler.jsonc
+
+Phase 5 完成後：
+curl -I https://coach-backend.katherine84522.workers.dev/api/health
+
+Phase 6 完成後：
+curl -I https://api.coachrocks.com/api/health
+curl -I https://coachrocks.com
+```
+
+---
+
+## 🎨 Cursor 特定規則
+
+### 使用 Cursor Composer 時
+
+**推薦的 Composer 工作流**:
+1. 打開多檔案編輯模式
+2. 預覽所有改動後再 Accept
+3. 執行驗證命令確認改動正確
+4. 只在驗證通過後 Accept 改動
+
+**不推薦**:
+- ❌ 直接接受大規模修改而不預覽
+- ❌ 一次修改超過 10 個檔案而不驗證
+- ❌ 編輯配置檔案時跳過備份
+
+### 使用 Cursor 終端時
+
+**推薦做法**:
+1. 每個命令執行後檢查返回碼
+2. 遇到錯誤立即告訴 AI 完整錯誤信息
+3. 使用 `set -e` 防止錯誤命令繼續執行
+4. 關鍵操作前備份
+
+**關鍵命令需要確認**:
+```
+find ... -exec sed ... {}  # 批量替換前預覽
+wrangler secret put ...     # Secrets 設置前驗證
+git commit -m              # 提交前查看 diff
+```
+
+---
+
+## 🔐 安全規則
+
+### 防止常見錯誤
+
+**檔案編輯時的防護**:
+- ✅ 修改前自動 git diff
+- ✅ 在 .env.* 檔案中提醒敏感信息
+- ✅ 在 wrangler.jsonc 中提醒 account_id
+- ✅ 備份重要配置檔案
+
+**命令執行時的防護**:
+- ⚠️ 提醒 sed/find 命令的危險性
+- ⚠️ 執行前顯示命令預覽
+- ⚠️ 提醒備份
+- ⚠️ 建議先在測試目錄執行
+
+### Git 提交規則
+
+**轉移相關提交時**:
+```
+提交消息格式：
+feat: Phase [N] - [簡要描述]
+
+例如：
+feat: Phase 2 - 更新後端 URL 至 katherine84522
+feat: Phase 3 - 配置 Google OAuth 和 RESEND
+
+提交前檢查：
+- git status 確認正確的檔案
+- git diff 預覽改動
+- 確認沒有意外的敏感信息
+```
+
+---
+
+## 📚 轉移指南快速連結
+
+當用戶在編輯轉移相關檔案時，自動推薦相關文件：
+
+```
+編輯 backend/wrangler.jsonc
+  ↓ 推薦查看：PROJECT_OWNERSHIP_TRANSFER_GUIDE.md → Phase 4
+
+編輯 backend/.dev.vars
+  ↓ 推薦查看：TRANSFER_QUICK_REFERENCE.md → 複製其他 Secrets
+
+編輯 frontend/.env.production
+  ↓ 推薦查看：PROJECT_OWNERSHIP_TRANSFER_GUIDE.md → Phase 6
+
+執行 wrangler secret 命令
+  ↓ 推薦查看：CURSOR_WORKFLOW.md → 終端工作流
+
+使用 Cursor Composer 進行批量編輯
+  ↓ 推薦查看：CURSOR_WORKFLOW.md → Cursor Composer 技巧
+```
+
+---
+
+## 🚀 Cursor Agent 提醒
+
+### 當使用 Cursor AI 時
+
+**推薦的 AI 工作流**:
+1. 在 Prompt 中明確指定參考檔案
+2. 要求 AI 執行前先顯示命令預覽
+3. 要求 AI 在執行後顯示驗證結果
+4. 遇到問題要求 AI 提出備用方案
+
+**AI Prompt 範本**:
+```
+[參考檔案] technical_docs/transfer_guide/TRANSFER_QUICK_REFERENCE.md
+[任務] [具體任務]
+[執行步驟]
+1. [步驟 1]
+2. [步驟 2]
+...
+[驗證] 執行以下命令確認成功：
+[驗證命令]
+```
+
+---
+
+## 📝 例外情況
+
+### 允許的例外
+
+- ✅ 修復 Cursor 轉移指南中的錯誤或過時信息
+- ✅ 根據實際情況調整驗證命令
+- ✅ 添加項目特定的優化建議
+
+### 需要明確批准的情況
+
+- ⚠️ 修改 Phase 執行順序
+- ⚠️ 刪除任何驗證步驟
+- ⚠️ 添加新的自動化操作（AUTO_012+）
+- ⚠️ 修改安全相關的規則
+
+---
+
+## 🎯 轉移進度追蹤
+
+**在 Cursor 中實時追蹤進度**:
+
+```
+當編輯 cursor-transfer-agent.md 時，提醒：
+☐ Phase 1：信息準備
+☐ Phase 2：自動化 URL 更新
+☐ Phase 3：OAuth & RESEND
+☐ Phase 4：資料庫遷移
+☐ Phase 5：驗證和測試
+☐ Phase 6：域名遷移
+☐ 最終：完成確認
+```
+
+---
+
+## 🆘 故障排除模式
+
+### 當執行失敗時的自動反應
+
+**Cursor AI 應該**:
+1. 捕捉完整的錯誤信息
+2. 在 PROJECT_OWNERSHIP_TRANSFER_GUIDE.md 中搜尋相關問題
+3. 在 TRANSFER_QUICK_REFERENCE.md 的「常見問題」中查找答案
+4. 提出具體的修復步驟
+
+**範例**:
+```
+如果 wrangler secret put 失敗：
+1. 檢查：wrangler login
+2. 檢查：wrangler whoami
+3. 參考 TRANSFER_QUICK_REFERENCE.md → 常見問題
+4. 提供逐步的修復指令
+```
+
+---
+
+## 📊 規則優先級
+
+```
+🔴 Critical（必須遵守）:
+  - 敏感信息保護
+  - Phase 執行順序
+  - 驗證步驟檢查清單
+
+🟡 Important（強烈推薦）:
+  - 備份檔案
+  - 預覽改動
+  - 執行驗證命令
+
+🟢 Nice to Have（可選）:
+  - 優化建議
+  - 性能優化
+  - 代碼美化
+```
+
+---
+
+## 💡 特殊指令
+
+### 在 Cursor 終端中輸入以下命令激活特殊行為
+
+```bash
+# 激活轉移模式（提醒所有轉移規則）
+# 在 Prompt 中包含：@transfer-guide
+
+# 激活安全檢查模式（強化敏感信息檢查）
+# 在 Prompt 中包含：@security-check
+
+# 激活驗證模式（執行完整驗證清單）
+# 在 Prompt 中包含：@validate-all
+```
+
+---
+
+*Cursor IDE Rules | CoachRocks AI Transfer Guide | 2025-11-19*
+
+**最後提醒**：這些規則是為了確保轉移過程平穩、安全、高效。如果有任何問題或建議，請更新本檔案。
