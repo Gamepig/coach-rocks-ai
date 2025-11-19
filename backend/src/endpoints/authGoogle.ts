@@ -258,9 +258,9 @@ export class AuthGoogle extends OpenAPIRoute {
       const requestUrl = new URL(c.req.url)
       const requestHostname = requestUrl.hostname
       const isRequestLocalhost = requestHostname === 'localhost' || requestHostname === '127.0.0.1'
-      
+
       if (isRequestLocalhost) {
-        const localhostFrontendUrl = 'http://localhost:5173'
+        const localhostFrontendUrl = c.env.DEV_FRONTEND_URL || 'http://localhost:5173'
         console.log('✅ Request is from localhost, forcing localhost frontend URL:', localhostFrontendUrl)
         console.log('  - Request hostname:', requestHostname)
         console.log('  - Request URL:', c.req.url)

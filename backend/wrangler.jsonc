@@ -7,6 +7,7 @@
 	"name": "coach-backend",
 	"main": "src/index.ts",
 	"compatibility_date": "2025-06-20",
+	// Note: account_id can be overridden by CLOUDFLARE_ACCOUNT_ID environment variable in CI/CD
 	"account_id": "9288c023577aa2f6ce20582b6c4bdda0",
 	"observability": {
 		"enabled": true

@@ -46,25 +46,34 @@ import { RegisterNew } from "./endpoints/registerNew";
 // Start a Hono app
 const app = new Hono<{ Bindings: Env }>();
 
-// Allowed origins for CORS
-const allowedOrigins = [
+// Allowed localhost origins for CORS (development)
+const localhostOrigins = [
 	'http://localhost:5173',  // Primary frontend port
-	'http://localhost:5174', 
-	'http://localhost:5175', 
+	'http://localhost:5174',
+	'http://localhost:5175',
 	'http://localhost:5176',
 	'http://localhost:3000',  // Create React App default
 	'http://localhost:3001',  // Create React App fallback
 	'http://localhost:8080',  // Vue/Webpack dev server
 	'http://localhost:4173',  // Vite preview mode
 	'http://localhost:4174',  // Vite preview fallback
-	// Production environment URLs
-	'https://coach-rocks-frontend.pages.dev',  // Production frontend
 ];
+
+// Helper function to get allowed origins (includes env-based production URL)
+const getAllowedOrigins = (env: Env): string[] => {
+	const origins = [...localhostOrigins];
+	// Add production frontend URL from environment variable
+	if (env.FRONTEND_URL) {
+		origins.push(env.FRONTEND_URL);
+	}
+	return origins;
+};
 
 // Explicit OPTIONS handler for CORS preflight requests
 app.options('*', async (c) => {
 	const origin = c.req.header('Origin');
-	
+	const allowedOrigins = getAllowedOrigins(c.env);
+
 	// Check if origin is allowed
 	if (origin && allowedOrigins.includes(origin)) {
 		console.log('✅ OPTIONS preflight request allowed for origin:', origin);
@@ -87,11 +96,14 @@ app.options('*', async (c) => {
 	});
 });
 
-// CORS middleware
+// CORS middleware with dynamic origin checking
 app.use(
 	'*',
 	cors({
-		origin: allowedOrigins,
+		origin: (origin, c) => {
+			const allowedOrigins = getAllowedOrigins(c.env);
+			return allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+		},
 		allowHeaders: ['Content-Type', 'Authorization'],
 		allowMethods: ['GET', 'POST', 'OPTIONS', 'DELETE', 'PUT'],
 		credentials: true
@@ -99,8 +111,17 @@ app.use(
 );
 
 // Setup OpenAPI registry
+// Note: schema.servers URL should match BACKEND_URL environment variable
 const openapi = fromHono(app, {
 	docs_url: "/",
+	schema: {
+		servers: [
+			{
+				url: "https://coach-backend.gamepig1976.workers.dev",
+				description: "Production server"
+			}
+		]
+	}
 });
 
 // Register OpenAI endpoints
