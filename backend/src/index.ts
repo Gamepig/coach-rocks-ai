@@ -43,6 +43,7 @@ import { AuthGoogleNew } from "./endpoints/authGoogleNew";
 import { LoginNew } from "./endpoints/loginNew";
 import { RegisterNew } from "./endpoints/registerNew";
 import { Health } from "./endpoints/health";
+import { TestEmailAuth } from "./endpoints/testEmailAuth";
 
 // Start a Hono app
 const app = new Hono<{ Bindings: Env }>();
@@ -217,15 +218,7 @@ openapi.post("/api/meetings/get-by-id", GetMeetingById);
 openapi.post("/api/debug/meeting", DebugMeeting);
 
 // Simple test endpoint to verify backend is working
-openapi.get("/api/test-email-auth", {
-  async handle(request: Request, env: any) {
-    return Response.json({
-      success: true,
-      message: "Email auth endpoint is reachable!",
-      timestamp: new Date().toISOString()
-    })
-  }
-});
+openapi.get("/api/test-email-auth", TestEmailAuth);
 
 // Direct Hono route as fallback for email auth (bypassing Chanfana)
 app.post("/api/start-analysis-with-email-direct", async (c) => {
