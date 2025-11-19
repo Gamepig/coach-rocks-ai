@@ -10,12 +10,20 @@
 
 ### 1️⃣ 在 Cursor 中打開專案
 
+#### 前置準備：克隆專案
 ```bash
-# 方法 A: 命令行
-cursor /Users/gamepig/projects/coach-rocks-main
+git clone https://gitlab.com/coach-rocks/coach-rocks.git
+cd coach-rocks
+```
 
-# 方法 B: 在 Cursor 中手動打開
-File → Open Folder → 選擇 coach-rocks-main
+#### 方法 A: 命令行打開
+```bash
+cursor .
+```
+
+#### 方法 B: 在 Cursor 中手動打開
+```
+File → Open Folder → 選擇 coach-rocks 資料夾
 ```
 
 ### 2️⃣ 打開轉移指南
