@@ -66,8 +66,8 @@ deploy-frontend:
     - export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID}"
     # 建置前端
     - pnpm build
-    # 部署到 Cloudflare Pages（使用 --account-id 參數指定帳戶）
-    - wrangler pages deploy dist --project-name=coach-rocks-frontend --account-id="${CLOUDFLARE_ACCOUNT_ID}"
+    # 部署到 Cloudflare Pages（account_id 從 frontend/wrangler.toml 讀取）
+    - wrangler pages deploy dist --project-name=coach-rocks-frontend
   environment:
     name: production
     url: ${FRONTEND_URL}
