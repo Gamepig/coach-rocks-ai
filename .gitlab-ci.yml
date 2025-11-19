@@ -64,6 +64,8 @@ deploy-frontend:
     - export VITE_BACKEND_BASE_URL="${BACKEND_URL}"
     # 設定 Cloudflare Account ID（從 GitLab CI/CD 變數讀取）
     - export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID}"
+    # Debug: 驗證環境變數（masked）
+    - echo "CLOUDFLARE_ACCOUNT_ID is set:" $(if [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then echo "yes"; else echo "NO"; fi)
     # 建置前端
     - pnpm build
     # 部署到 Cloudflare Pages（account_id 從 CLOUDFLARE_ACCOUNT_ID 環境變數讀取）
