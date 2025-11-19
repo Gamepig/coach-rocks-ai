@@ -1,5 +1,6 @@
 import React from 'react'
 import { getBackendBaseUrl } from '../../services/api'
+import { isProduction } from '../../config/environment'
 import './LoginPage.css'
 
 const LoginPage = ({ onBack }) => {
@@ -11,8 +12,8 @@ const LoginPage = ({ onBack }) => {
       window.location.href = `${backendBaseUrl}/api/auth/google/init`
     } catch (error) {
       // 如果在開發環境拋出錯誤，顯示詳細訊息
-      const isProduction = window.location.hostname.includes('pages.dev')
-      const errorMessage = isProduction
+      const isProd = isProduction()
+      const errorMessage = isProd
         ? `❌ Google OAuth 無法使用：後端 URL 驗證失敗
 
 詳細訊息：${error.message}

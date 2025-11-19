@@ -1,4 +1,5 @@
 import { sanitizeBackendUrlValue } from './backendUrlValidation.js'
+import { isProduction } from '../config/environment.js'
 
 // API service for communicating with the backend server
 // ✅ 使用環境變數配置，支持動態後端 URL
@@ -39,11 +40,11 @@ const getBackendBaseUrl = (overrideValue, options = {}) => {
     return DEFAULT_BACKEND_URL
   }
   
-  const isProduction = typeof options.isProductionOverride === 'boolean'
+  const isProd = typeof options.isProductionOverride === 'boolean'
     ? options.isProductionOverride
-    : (typeof window !== 'undefined' && window.location?.hostname?.includes('pages.dev'))
-  
-  if (isProduction) {
+    : isProduction()
+
+  if (isProd) {
     console.warn(`⚠️ VITE_BACKEND_BASE_URL not configured, using default: ${DEFAULT_BACKEND_URL}`)
     return DEFAULT_BACKEND_URL
   }

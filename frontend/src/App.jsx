@@ -9,6 +9,7 @@ import { saveAs } from 'file-saver'
 import { apiService } from './services/api'
 import { useAuth } from './contexts/AuthContext'
 import { quickCheck } from './utils/envDiagnostics'
+import { isProduction } from './config/environment'
 import LoginForm from './components/auth/LoginForm'
 import RegisterForm from './components/auth/RegisterForm'
 import GoogleLoginButton from './components/auth/GoogleLoginButton'
@@ -155,7 +156,7 @@ function App() {
   // 環境變數診斷檢查（應用啟動時執行）
   useEffect(() => {
     // 在生產環境中檢查環境變數配置
-    if (window.location.hostname.includes('pages.dev')) {
+    if (isProduction()) {
       const check = quickCheck()
       if (!check.isConfigured) {
         console.warn('⚠️ 生產環境環境變數未設定，Google OAuth 功能將無法使用')

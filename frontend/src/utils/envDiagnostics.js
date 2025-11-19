@@ -3,13 +3,15 @@
  * 用於診斷和報告 VITE_BACKEND_BASE_URL 環境變數配置問題
  */
 
+import { isProduction as checkIsProduction, isDevelopment } from '../config/environment'
+
 /**
  * 檢查環境變數配置狀態
  * @returns {Object} 診斷結果
  */
 export function checkEnvironmentVariables() {
   const backendUrl = import.meta.env.VITE_BACKEND_BASE_URL
-  const isProduction = window.location.hostname.includes('pages.dev')
+  const isProduction = checkIsProduction()
   const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   
   const allViteEnvVars = Object.keys(import.meta.env).filter(key => key.startsWith('VITE_'))

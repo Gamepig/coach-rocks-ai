@@ -1,7 +1,7 @@
 # CoachRocks AI 技術文件索引
 
 **專案**: CoachRocks AI - Enterprise-Grade AI Coaching Platform
-**最後更新**: 2025-11-19
+**最後更新**: 2025-11-19 (新增環境配置、OAuth 故障排查、硬編碼審查文檔)
 **維護者**: Development Team
 
 ---
@@ -34,6 +34,12 @@
 
 12. [環境變數設置指南](./12_environment_variables_setup.md) ⭐ - Phase 2 環境變數完整設置指南（包含實際部署驗證）
 13. [Phase 1 環境設置詳細指引](./13_phase_1_setup.md) - 階段一環境變數設置步驟指引
+14. [環境配置指南](./14_environment_config_guide.md) - 統一環境配置模組使用與維護
+15. [Google OAuth 故障排查](./15_google_oauth_troubleshooting.md) - Google OAuth 常見問題診斷與解決
+
+### 系統維護
+
+16. [硬編碼值審查報告](./16_hardcoded_values_audit.md) - 專案硬編碼值全面審查與改進建議
 
 ---
 
@@ -78,18 +84,22 @@
 | 安全實踐 | [11_security_practices.md](./11_security_practices.md) | Security guidelines |
 | 環境變數設定 | [12_environment_variables_setup.md](./12_environment_variables_setup.md) | `.gitlab-ci.yml`, `wrangler.jsonc` |
 | Phase 1 環境設置 | [13_phase_1_setup.md](./13_phase_1_setup.md) | Cloudflare Secrets, GitLab Variables |
+| 環境配置模組 | [14_environment_config_guide.md](./14_environment_config_guide.md) | `frontend/src/config/environment.js` |
+| OAuth 故障排查 | [15_google_oauth_troubleshooting.md](./15_google_oauth_troubleshooting.md) | Google OAuth 診斷 |
+| 硬編碼審查 | [16_hardcoded_values_audit.md](./16_hardcoded_values_audit.md) | 系統維護報告 |
 
 ### 依開發階段查找
 
 | 階段 | 需要閱讀的文件 |
 |------|--------------|
-| **環境設定** | 13_phase_1_setup.md, 12_environment_variables_setup.md ⭐, 10_cloudflare_deployment.md |
-| **認證開發** | 01_google_oauth.md |
+| **環境設定** | 13_phase_1_setup.md, 12_environment_variables_setup.md ⭐, 14_environment_config_guide.md, 10_cloudflare_deployment.md |
+| **認證開發** | 01_google_oauth.md, 15_google_oauth_troubleshooting.md |
 | **郵件功能** | 08_notification_emails.md |
 | **會議分析** | 03_meeting_analysis.md, 04_database_service.md |
 | **自動化整合** | 05_auto_analysis.md, 06_zoom_integration.md, 07_google_meet_integration.md |
-| **部署上線** | 13_phase_1_setup.md, 12_environment_variables_setup.md, 09_gitlab_cicd.md, 10_cloudflare_deployment.md |
+| **部署上線** | 13_phase_1_setup.md, 12_environment_variables_setup.md, 14_environment_config_guide.md, 09_gitlab_cicd.md, 10_cloudflare_deployment.md |
 | **安全檢查** | 11_security_practices.md |
+| **系統維護** | 16_hardcoded_values_audit.md, 14_environment_config_guide.md |
 
 ---
 
@@ -98,8 +108,8 @@
 ### 新成員入門
 
 1. **閱讀順序** (建議):
-   - ⭐ Phase 1 環境設置 → 環境變數設置 (Phase 2) → Cloudflare 部署 → 資料庫服務 → Google OAuth → 會議分析
-2. **環境設定**: 參考 `13_phase_1_setup.md`, `12_environment_variables_setup.md` ⭐ 和 `10_cloudflare_deployment.md`
+   - ⭐ Phase 1 環境設置 → 環境變數設置 (Phase 2) → 環境配置指南 → Cloudflare 部署 → 資料庫服務 → Google OAuth → 會議分析
+2. **環境設定**: 參考 `13_phase_1_setup.md`, `12_environment_variables_setup.md` ⭐, `14_environment_config_guide.md` 和 `10_cloudflare_deployment.md`
 3. **本地開發**: 參考各功能文件的「開發環境設定」章節
 4. **測試驗證**: 參考各功能文件的「測試範例」章節
 
@@ -107,8 +117,10 @@
 
 1. **檢查相關文件的 QA 章節**
 2. **查看 Debug 說明**
-3. **參考 `11_security_practices.md` 確認安全問題**
-4. **查看專案的 `memory-bank/activeContext.md` 了解當前已知問題**
+3. **Google OAuth 問題**: 參考 `15_google_oauth_troubleshooting.md`
+4. **環境配置問題**: 參考 `14_environment_config_guide.md`
+5. **參考 `11_security_practices.md` 確認安全問題**
+6. **查看專案的 `memory-bank/activeContext.md` 了解當前已知問題**
 
 ### 文件更新
 

@@ -113,7 +113,10 @@ app.use(
 );
 
 // Setup OpenAPI registry
-// Note: schema.servers URL should match BACKEND_URL environment variable
+// ⚠️ Note: Server URL is hardcoded here because fromHono() is called during module initialization
+// before environment variables are available. This URL is only used for API documentation display.
+// When deploying to a new domain, update this URL manually.
+// TODO: Consider dynamic OpenAPI generation if needed in the future
 const openapi = fromHono(app, {
 	docs_url: "/",
 	schema: {
