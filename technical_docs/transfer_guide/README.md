@@ -4,6 +4,23 @@
 
 ---
 
+## 🚀 第一步：從 GitLab 克隆專案
+
+使用此轉移指南前，請先從 GitLab 獲取完整專案代碼：
+
+```bash
+# 克隆專案
+git clone https://gitlab.com/coach-rocks/coach-rocks.git
+cd coach-rocks
+
+# 確認轉移指南文件已存在
+ls -la technical_docs/transfer_guide/
+```
+
+所有轉移文檔位於 `technical_docs/transfer_guide/` 資料夾中。
+
+---
+
 ## 📚 文件導覽
 
 ### 1️⃣ **PROJECT_OWNERSHIP_TRANSFER_GUIDE.md** ⭐ 主要文檔
@@ -131,18 +148,24 @@
 
 **如果您正在使用 Cursor IDE，這裡是最快的入門方式**：
 
-### 3 分鐘快速開始
+### 3 步快速開始
 
-```bash
-# 1. 在 Cursor 中打開專案
-cursor /Users/gamepig/projects/coach-rocks-main
+1. **克隆並打開專案**
+   ```bash
+   git clone https://gitlab.com/coach-rocks/coach-rocks.git
+   cd coach-rocks
+   cursor .
+   ```
 
-# 2. 打開轉移指南
-按 Cmd+P → 搜尋 "CURSOR_WORKFLOW.md"
+2. **打開轉移工作流指南**
+   ```
+   按 Cmd+P (Mac) 或 Ctrl+P (Windows) → 搜尋 "CURSOR_WORKFLOW.md"
+   ```
 
-# 3. 按照指南操作
-參考 CURSOR_WORKFLOW.md 進行轉移
-```
+3. **參考指南執行轉移**
+   ```
+   根據 CURSOR_WORKFLOW.md 進行操作
+   ```
 
 ### 推薦的 Cursor 工作流
 
@@ -171,33 +194,36 @@ cursor /Users/gamepig/projects/coach-rocks-main
 
 ---
 
-## 🚀 快速開始（非 Cursor 用戶）
+## 🚀 快速開始（其他用戶）
 
-### 推薦流程
+### 推薦流程（按優先級）
 
-1. **開始前（5 分鐘）**
-   ```bash
-   # 閱讀主要指南（理解整體流程）
-   cat PROJECT_OWNERSHIP_TRANSFER_GUIDE.md | head -200
-   ```
+#### 🥇 **方案 1：GitLab CI/CD（最推薦）**
+適合：Katherine 使用 Windows、無法在本地執行 Bash、需要完全自動化
+
+1. 閱讀 `GITLAB_CICD_SETUP.md`（10 分鐘）
+2. 在 GitLab 中設置 Variables
+3. 觸發 Pipeline，自動完成轉移
+4. 監控執行日誌
+
+👉 **詳細指南**: [`GITLAB_CICD_SETUP.md`](./GITLAB_CICD_SETUP.md)
+
+---
+
+#### 🥈 **方案 2：本地執行（備選）**
+適合：有開發環境、需要更多控制
+
+1. **閱讀主要指南**（5-10 分鐘）
+   - 打開 `PROJECT_OWNERSHIP_TRANSFER_GUIDE.md`
+   - 理解 6 個 Phase 的流程
 
 2. **Phase 1-5（轉移帳戶、配置）**
-   ```bash
-   # 逐步參考快速指南執行操作
-   cat TRANSFER_QUICK_REFERENCE.md
-
-   # 或提供給 AI 完整指令
-   cat AI_TRANSFER_INSTRUCTIONS.json | jq '.phases.phase_1, .phases.phase_2'
-   ```
+   - 參考 `TRANSFER_QUICK_REFERENCE.md` 逐步執行
+   - 或將 `AI_TRANSFER_INSTRUCTIONS.json` 提供給 AI 自動化
 
 3. **Phase 6（域名遷移）**
-   ```bash
-   # 查閱主要指南的 Phase 6 部分或補充文檔
-   grep -A 200 "第 6 階段" PROJECT_OWNERSHIP_TRANSFER_GUIDE.md
-
-   # 或查看 JSON 補充文檔
-   cat DOMAIN_MIGRATION_JSON_SUPPLEMENT.json
-   ```
+   - 查看 `PROJECT_OWNERSHIP_TRANSFER_GUIDE.md` 的「第 6 階段」
+   - 或參考 `DOMAIN_MIGRATION_JSON_SUPPLEMENT.json`
 
 ---
 
@@ -270,10 +296,23 @@ node test-resend-email.js test@example.com
 ## 🆘 常見問題
 
 ### Q1: 從哪個文檔開始？
-**A**: 按順序：
+
+**A**: 根據您的情況選擇：
+
+**💻 如果您使用 Windows（推薦）：**
+1. 本 README（快速概覽）
+2. `GITLAB_CICD_SETUP.md`（GitLab CI/CD 自動化）✅ **最簡單**
+3. 在 GitLab 中設置 Variables 並觸發 Pipeline
+
+**🖥️ 如果您有本地開發環境：**
 1. 本 README（快速概覽）
 2. `PROJECT_OWNERSHIP_TRANSFER_GUIDE.md`（完整理解）
 3. `TRANSFER_QUICK_REFERENCE.md`（實際操作）
+
+**🎨 如果您使用 Cursor IDE：**
+1. 本 README（快速概覽）
+2. `CURSOR_WORKFLOW.md`（Cursor 工作流）
+3. `cursor-transfer-agent.md`（複製 Prompts 執行）
 
 ### Q2: 郵件服務配置在哪裡？
 **A**: AUTO_008 - RESEND 郵件服務配置
@@ -297,12 +336,18 @@ node test-resend-email.js test@example.com
 
 ## 📊 檔案大小和複雜度
 
-| 文檔 | 大小 | 複雜度 | 用途 |
-|------|------|--------|------|
-| PROJECT_OWNERSHIP_TRANSFER_GUIDE.md | 41KB | 🟡 中等 | 完整指南 |
-| TRANSFER_QUICK_REFERENCE.md | 17KB | 🟢 簡單 | 快速參考 |
-| AI_TRANSFER_INSTRUCTIONS.json | 17KB | 🟡 中等 | AI 自動化 |
-| DOMAIN_MIGRATION_JSON_SUPPLEMENT.json | 15KB | 🟠 複雜 | Phase 6 詳細 |
+| 文檔 | 大小 | 複雜度 | 用途 | 推薦對象 |
+|------|------|--------|------|---------|
+| **GITLAB_CICD_SETUP.md** ⭐ | 15KB | 🟢 簡單 | GitLab CI/CD 自動化 | Windows 用戶 |
+| **PROJECT_OWNERSHIP_TRANSFER_GUIDE.md** | 41KB | 🟡 中等 | 完整轉移指南 | 需要詳細說明 |
+| **TRANSFER_QUICK_REFERENCE.md** | 17KB | 🟢 簡單 | 快速查閱和操作 | 快速上手 |
+| **AI_TRANSFER_INSTRUCTIONS.json** | 17KB | 🟡 中等 | AI 可執行指令 | AI 自動化 |
+| **CURSOR_WORKFLOW.md** | 13KB | 🟡 中等 | Cursor IDE 工作流 | Cursor 用戶 |
+| **cursor-transfer-agent.md** | 17KB | 🟡 中等 | 22 個 AI Prompts | Cursor + AI |
+| **DOMAIN_MIGRATION_JSON_SUPPLEMENT.json** | 15KB | 🟠 複雜 | Phase 6 詳細 | 域名遷移階段 |
+| **.cursorules** | 7KB | 🟢 簡單 | Cursor IDE 規則 | Cursor 用戶 |
+
+**總計**: 152KB，9 個文件
 
 ---
 
@@ -319,9 +364,23 @@ node test-resend-email.js test@example.com
 ## 📝 最後更新
 
 - **日期**: 2025-11-19
-- **新增**: AUTO_008 RESEND 郵件服務詳細配置
-- **版本**: 1.0
+- **新增**:
+  - GitLab CI/CD 自動化方案（GITLAB_CICD_SETUP.md）
+  - Cursor IDE 完整優化（CURSOR_WORKFLOW.md、cursor-transfer-agent.md）
+  - 移除本地路徑，改為統一的 Git 克隆說明
+- **更新**: README 優先級調整，GitLab CI/CD 置於首位
+- **版本**: 2.0
 
 ---
 
-**準備好開始轉移了嗎？** 從 `PROJECT_OWNERSHIP_TRANSFER_GUIDE.md` 開始！🚀
+## 🎯 準備開始轉移？
+
+根據您的環境選擇：
+
+| 環境 | 推薦方案 | 開始文檔 |
+|------|---------|---------|
+| **Windows（最推薦）** | GitLab CI/CD 自動化 | [`GITLAB_CICD_SETUP.md`](./GITLAB_CICD_SETUP.md) |
+| **本地開發環境** | 逐步手動執行 | [`PROJECT_OWNERSHIP_TRANSFER_GUIDE.md`](./PROJECT_OWNERSHIP_TRANSFER_GUIDE.md) |
+| **Cursor IDE** | Cursor 工作流 | [`CURSOR_WORKFLOW.md`](./CURSOR_WORKFLOW.md) |
+
+**第一步**: [克隆專案](#-第一步從-gitlab-克隆專案) → 選擇上方對應的開始文檔
