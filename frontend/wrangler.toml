@@ -1,8 +1,6 @@
 # Wrangler configuration for Cloudflare Pages deployment
-# This file is required for `wrangler pages deploy` to work correctly
-
-# Note: account_id can be overridden by CLOUDFLARE_ACCOUNT_ID environment variable in CI/CD
-account_id = "9288c023577aa2f6ce20582b6c4bdda0"
+# Note: Pages projects do NOT support account_id in wrangler.toml
+# Use CLOUDFLARE_ACCOUNT_ID environment variable instead
 
 # Cloudflare Pages 專案名稱
 name = "coach-rocks-frontend"
