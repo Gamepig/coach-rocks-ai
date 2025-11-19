@@ -33,6 +33,7 @@
 ### 環境設定
 
 12. [環境變數設置指南](./12_environment_variables_setup.md) ⭐ - Phase 2 環境變數完整設置指南（包含實際部署驗證）
+13. [Phase 1 環境設置詳細指引](./13_phase_1_setup.md) - 階段一環境變數設置步驟指引
 
 ---
 
@@ -76,17 +77,18 @@
 | Cloudflare 部署 | [10_cloudflare_deployment.md](./10_cloudflare_deployment.md) | `wrangler.jsonc` |
 | 安全實踐 | [11_security_practices.md](./11_security_practices.md) | Security guidelines |
 | 環境變數設定 | [12_environment_variables_setup.md](./12_environment_variables_setup.md) | `.gitlab-ci.yml`, `wrangler.jsonc` |
+| Phase 1 環境設置 | [13_phase_1_setup.md](./13_phase_1_setup.md) | Cloudflare Secrets, GitLab Variables |
 
 ### 依開發階段查找
 
 | 階段 | 需要閱讀的文件 |
 |------|--------------|
-| **環境設定** | 12_environment_variables_setup.md ⭐, 10_cloudflare_deployment.md |
+| **環境設定** | 13_phase_1_setup.md, 12_environment_variables_setup.md ⭐, 10_cloudflare_deployment.md |
 | **認證開發** | 01_google_oauth.md |
 | **郵件功能** | 08_notification_emails.md |
 | **會議分析** | 03_meeting_analysis.md, 04_database_service.md |
 | **自動化整合** | 05_auto_analysis.md, 06_zoom_integration.md, 07_google_meet_integration.md |
-| **部署上線** | 12_environment_variables_setup.md, 09_gitlab_cicd.md, 10_cloudflare_deployment.md |
+| **部署上線** | 13_phase_1_setup.md, 12_environment_variables_setup.md, 09_gitlab_cicd.md, 10_cloudflare_deployment.md |
 | **安全檢查** | 11_security_practices.md |
 
 ---
@@ -96,8 +98,8 @@
 ### 新成員入門
 
 1. **閱讀順序** (建議):
-   - ⭐ 環境變數設置 → Cloudflare 部署 → 資料庫服務 → Google OAuth → 會議分析
-2. **環境設定**: 參考 `12_environment_variables_setup.md` ⭐ 和 `10_cloudflare_deployment.md`
+   - ⭐ Phase 1 環境設置 → 環境變數設置 (Phase 2) → Cloudflare 部署 → 資料庫服務 → Google OAuth → 會議分析
+2. **環境設定**: 參考 `13_phase_1_setup.md`, `12_environment_variables_setup.md` ⭐ 和 `10_cloudflare_deployment.md`
 3. **本地開發**: 參考各功能文件的「開發環境設定」章節
 4. **測試驗證**: 參考各功能文件的「測試範例」章節
 
