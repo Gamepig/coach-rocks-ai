@@ -1,7 +1,7 @@
 # CoachRocks AI 技術文件索引
 
 **專案**: CoachRocks AI - Enterprise-Grade AI Coaching Platform
-**最後更新**: 2025-11-18
+**最後更新**: 2025-11-19
 **維護者**: Development Team
 
 ---
@@ -29,6 +29,10 @@
 ### 安全性
 
 11. [安全最佳實踐](./11_security_practices.md) - OWASP Top 10 與安全開發規範
+
+### 環境設定
+
+12. [環境變數設置指南](./12_environment_variables_setup.md) ⭐ - Phase 2 環境變數完整設置指南（包含實際部署驗證）
 
 ---
 
@@ -71,17 +75,18 @@
 | CI/CD 部署 | [09_gitlab_cicd.md](./09_gitlab_cicd.md) | `.gitlab-ci.yml` |
 | Cloudflare 部署 | [10_cloudflare_deployment.md](./10_cloudflare_deployment.md) | `wrangler.jsonc` |
 | 安全實踐 | [11_security_practices.md](./11_security_practices.md) | Security guidelines |
+| 環境變數設定 | [12_environment_variables_setup.md](./12_environment_variables_setup.md) | `.gitlab-ci.yml`, `wrangler.jsonc` |
 
 ### 依開發階段查找
 
 | 階段 | 需要閱讀的文件 |
 |------|--------------|
-| **環境設定** | 10_cloudflare_deployment.md |
+| **環境設定** | 12_environment_variables_setup.md ⭐, 10_cloudflare_deployment.md |
 | **認證開發** | 01_google_oauth.md |
 | **郵件功能** | 08_notification_emails.md |
 | **會議分析** | 03_meeting_analysis.md, 04_database_service.md |
 | **自動化整合** | 05_auto_analysis.md, 06_zoom_integration.md, 07_google_meet_integration.md |
-| **部署上線** | 09_gitlab_cicd.md, 10_cloudflare_deployment.md |
+| **部署上線** | 12_environment_variables_setup.md, 09_gitlab_cicd.md, 10_cloudflare_deployment.md |
 | **安全檢查** | 11_security_practices.md |
 
 ---
@@ -91,8 +96,8 @@
 ### 新成員入門
 
 1. **閱讀順序** (建議):
-   - Cloudflare 部署 → 資料庫服務 → Google OAuth → 會議分析
-2. **環境設定**: 參考 `10_cloudflare_deployment.md`
+   - ⭐ 環境變數設置 → Cloudflare 部署 → 資料庫服務 → Google OAuth → 會議分析
+2. **環境設定**: 參考 `12_environment_variables_setup.md` ⭐ 和 `10_cloudflare_deployment.md`
 3. **本地開發**: 參考各功能文件的「開發環境設定」章節
 4. **測試驗證**: 參考各功能文件的「測試範例」章節
 
