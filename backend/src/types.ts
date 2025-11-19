@@ -29,6 +29,7 @@ export interface Env {
 	// Application URLs
 	BACKEND_URL: string;
 	FRONTEND_URL: string;
+	DEV_FRONTEND_URL?: string; // Optional: Development frontend URL (default: http://localhost:5173)
 	
 	// OAuth - Google
 	GOOGLE_CLIENT_ID: string;

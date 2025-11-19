@@ -11,8 +11,12 @@ NC='\033[0m'
 log() { echo -e "${GREEN}[$(date '+%H:%M:%S')]${NC} $*"; }
 warn() { echo -e "${YELLOW}[$(date '+%H:%M:%S')] WARNING${NC} $*"; }
 
-cd /Users/gamepig/projects/coach-rocks-main || {
-  echo "錯誤: 找不到 coach-rocks-main 目錄"
+# 動態偵測專案根目錄（腳本所在目錄的上層）
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+cd "$PROJECT_ROOT" || {
+  echo "錯誤: 無法切換到專案根目錄 $PROJECT_ROOT"
   exit 1
 }
 

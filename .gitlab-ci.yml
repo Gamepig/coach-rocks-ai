@@ -23,8 +23,8 @@ deploy-backend:
   script:
     # 設定 Cloudflare API Token（從 GitLab CI/CD 變數讀取）
     - export CLOUDFLARE_API_TOKEN="${CLOUDFLARE_API_TOKEN}"
-    # 設定 Account ID
-    - export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID:-9288c023577aa2f6ce20582b6c4bdda0}"
+    # 設定 Account ID（從 GitLab CI/CD 變數讀取）
+    - export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID}"
     # ✅ 驗證 TypeScript 編譯（確保沒有編譯錯誤）
     - echo "Checking TypeScript compilation..."
     - npx tsc --noEmit || echo "TypeScript check completed (warnings may exist)"
@@ -37,10 +37,10 @@ deploy-backend:
     # ✅ 驗證部署是否成功
     - echo "Verifying deployment..."
     - sleep 2
-    - curl -f https://coach-backend.gamepig1976.workers.dev/api/health || echo "Health check failed (may need a moment to propagate)"
+    - curl -f ${BACKEND_URL}/api/health || echo "Health check failed (may need a moment to propagate)"
   environment:
     name: production
-    url: https://coach-backend.gamepig1976.workers.dev
+    url: ${BACKEND_URL}
   # ✅ 使用 rules 語法確保自動觸發（推薦方式）
   rules:
     - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "master"
@@ -60,17 +60,17 @@ deploy-frontend:
     - pnpm install
   script:
     # 設定環境變數（用於建置）
-    # 從 GitLab CI/CD 變數讀取，如果沒有則使用預設值
-    - export VITE_BACKEND_BASE_URL="${VITE_BACKEND_BASE_URL:-https://coach-backend.gamepig1976.workers.dev}"
-    # 設定 Cloudflare Account ID
-    - export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID:-9288c023577aa2f6ce20582b6c4bdda0}"
+    # 從 GitLab CI/CD 變數讀取
+    - export VITE_BACKEND_BASE_URL="${BACKEND_URL}"
+    # 設定 Cloudflare Account ID（從 GitLab CI/CD 變數讀取）
+    - export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID}"
     # 建置前端
     - pnpm build
     # 部署到 Cloudflare Pages（wrangler 會自動讀取 CLOUDFLARE_API_TOKEN 環境變數）
     - wrangler pages deploy dist --project-name=coach-rocks-frontend
   environment:
     name: production
-    url: https://coach-rocks-frontend.pages.dev
+    url: ${FRONTEND_URL}
   # ✅ 使用 rules 語法確保自動觸發（推薦方式）
   rules:
     - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "master"
