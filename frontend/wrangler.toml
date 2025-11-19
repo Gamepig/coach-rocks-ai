@@ -5,5 +5,7 @@
 account_id = "9288c023577aa2f6ce20582b6c4bdda0"
 
 # Cloudflare Pages 專案名稱
-[env.production]
 name = "coach-rocks-frontend"
+
+# Pages build output directory (required for wrangler.toml to be recognized)
+pages_build_output_dir = "dist"
