@@ -1,388 +1,338 @@
-# 🔒 CoachRocks AI - Enterprise-Grade Coaching Platform
+# 🔒 CoachRocks AI - 企業級教練平台
 
-> **Security-First** AI-powered meeting analysis platform designed for coaches and consultants who handle sensitive client information.
+> **安全優先**的 AI 驅動會議分析平台，專為處理敏感客戶資訊的教練和顧問設計。
 
-[![Security](https://img.shields.io/badge/security-first-green.svg)](./SECURITY.md)
+[![安全性](https://img.shields.io/badge/security-first-green.svg)](./SECURITY.md)
 [![OWASP](https://img.shields.io/badge/OWASP-compliant-blue.svg)](./security/OWASP_CHECKLIST.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)](https://www.typescriptlang.org/)
 [![Cloudflare](https://img.shields.io/badge/Cloudflare-Workers-orange.svg)](https://workers.cloudflare.com/)
 
 ---
 
-## 🌟 Why CoachRocks AI?
+## 🌟 核心優勢
 
-### 🔐 Security as Our Core Differentiator
+### 🔐 企業級安全架構
 
-CoachRocks AI is built from the ground up with **enterprise-grade security** as our primary value proposition. We understand that coaching sessions contain highly sensitive client information, and we've designed every aspect of our platform to protect your data.
+CoachRocks AI 從根本上構建了**企業級安全**作為核心價值。深刻理解教練會議包含高度敏感的客戶資訊，因此在平台的每個方面都設計了全面的資料保護機制。
 
-**Our Security Commitments**:
-- ✅ **Zero-knowledge architecture** - Your data is encrypted end-to-end
-- ✅ **GDPR compliant** - Full data privacy and portability
-- ✅ **SOC 2 ready** - Enterprise security standards (certification in progress)
-- ✅ **Bank-level encryption** - AES-256-GCM for sensitive data
-- ✅ **Multi-layer defense** - DDoS protection, WAF, rate limiting, and more
+**安全承諾**：
+- ✅ **零知識架構** - 端到端加密您的資料
+- ✅ **GDPR 合規** - 完整的資料隱私和可移植性
+- ✅ **SOC 2 就緒** - 企業安全標準（認證進行中）
+- ✅ **銀行級加密** - AES-256-GCM 敏感資料加密
+- ✅ **多層防禦** - DDoS 防護、WAF、速率限制等
 
-### ⚡ What We Do
+### ⚡ 核心功能
 
-Transform your coaching workflow with AI-powered automation:
-- 🎙️ **Automatic Transcription** - Crystal-clear meeting records
-- 📊 **Intelligent Analysis** - AI-generated summaries and action items
-- 📱 **Social Content** - Auto-generated Reels scripts for marketing
-- 🧠 **Mind Maps** - Visual representation of coaching sessions
-- 🔗 **Platform Integration** - Seamless Zoom and Google Meet sync
-- 📧 **Smart Notifications** - Secure email delivery with verification
+用 AI 自動化轉變您的教練工作流程：
+- 🎙️ **自動轉錄** - 清晰的會議記錄
+- 📊 **智能分析** - AI 生成的摘要和行動項目
+- 📱 **社交內容** - 自動生成 Reels 腳本用於行銷
+- 🧠 **思維導圖** - 教練會議的視覺表示
+- 🔗 **平台整合** - 無縫 Zoom 和 Google Meet 同步
+- 📧 **智能通知** - 安全郵件傳遞和驗證
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ 技術架構
 
-### Tech Stack
+### 技術棧
 
-#### 🔒 Security-First Technologies
+#### 🔒 安全優先的技術選擇
 
-**Backend**:
-- **Cloudflare Workers** - Edge computing with built-in DDoS protection
-- **Hono Framework** - Lightweight, secure HTTP framework
-- **TypeScript** - Type-safe development (strict mode)
-- **Drizzle ORM** - SQL injection protection
+**後端**：
+- **Cloudflare Workers** - 邊緣計算具有內置 DDoS 防護
+- **Hono Framework** - 輕量級、安全的 HTTP 框架
+- **TypeScript** - 類型安全開發（嚴格模式）
+- **Drizzle ORM** - SQL 注入防護
 
-**Frontend**:
-- **React 18** - Modern, secure UI framework
-- **Vite** - Fast builds with environment isolation
-- **TypeScript** - Type-safe frontend code
+**前端**：
+- **React 18** - 現代化、安全的 UI 框架
+- **Vite** - 快速構建和環境隔離
+- **TypeScript** - 類型安全的前端代碼
 
-**Database & Storage**:
-- **Cloudflare D1** - Encrypted SQLite at the edge
-- **Cloudflare R2** - Secure object storage
-- **At-rest encryption** - All sensitive data encrypted
+**資料庫和儲存**：
+- **Cloudflare D1** - 邊緣加密 SQLite
+- **Cloudflare R2** - 安全的物件儲存
+- **靜態加密** - 所有敏感資料都已加密
 
-**Security Stack**:
-- **JWT Authentication** - RS256 signed tokens
-- **OAuth 2.0** - Google, Zoom integration
-- **bcrypt/argon2** - Password hashing
-- **TLS 1.3** - Transport encryption
-- **RBAC** - Role-based access control
-- **Rate Limiting** - Multi-layer protection
-- **Audit Logging** - Complete activity tracking
+**安全堆棧**：
+- **JWT 認證** - RS256 簽名令牌
+- **OAuth 2.0** - Google、Zoom 整合
+- **bcrypt/argon2** - 密碼雜湊
+- **TLS 1.3** - 傳輸加密
+- **RBAC** - 基於角色的存取控制
+- **速率限制** - 多層防護
+- **稽核日誌** - 完整的活動追蹤
 
-### Architecture Diagram
+### 架構圖
 
 ```
 ┌─────────────────────────────────────────┐
-│         Security Layers                  │
+│         安全層                          │
 ├─────────────────────────────────────────┤
 │  1. Cloudflare DDoS + WAF              │
-│  2. TLS 1.3 Encryption                  │
-│  3. JWT Authentication                  │
-│  4. RBAC Authorization                  │
-│  5. Input Validation (Zod)              │
-│  6. Rate Limiting                       │
-│  7. Audit Logging                       │
+│  2. TLS 1.3 加密                        │
+│  3. JWT 認證                            │
+│  4. RBAC 授權                           │
+│  5. 輸入驗證 (Zod)                      │
+│  6. 速率限制                            │
+│  7. 稽核日誌                            │
 └─────────────────────────────────────────┘
               ⬇️
 ┌─────────────────────────────────────────┐
-│    Cloudflare Edge Workers              │
-│    - Backend API (Hono)                 │
-│    - Frontend (React)                   │
+│    Cloudflare 邊緣 Workers              │
+│    - 後端 API (Hono)                   │
+│    - 前端 (React)                       │
 └─────────────────────────────────────────┘
               ⬇️
 ┌─────────────────────────────────────────┐
-│    Encrypted Storage                     │
-│    - Cloudflare D1 (Database)           │
-│    - Cloudflare R2 (Files)              │
+│    加密儲存                              │
+│    - Cloudflare D1 (資料庫)             │
+│    - Cloudflare R2 (檔案)               │
 └─────────────────────────────────────────┘
 ```
 
 ---
 
-## 🚀 Quick Start
+## 🚀 快速開始
 
-### Prerequisites
+### 先決條件
 
 - Node.js 18+ (LTS)
 - pnpm 8+
 - Wrangler CLI (`npm install -g wrangler`)
-- Cloudflare account
+- Cloudflare 帳戶
 
-### Installation
+### 安裝
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-org/coach-rocks-ai.git
+# 複製儲存庫
+git clone https://github.com/Gamepig/coach-rocks-ai.git
 cd coach-rocks-ai
 
-# Install dependencies
+# 安裝依賴
 pnpm install
 
-# Set up environment variables
+# 設置環境變數
 cp .env.example .env.local
-# Edit .env.local with your actual values
+# 使用您的實際值編輯 .env.local
 
-# Generate security secrets
-openssl rand -hex 32  # Use for JWT_SECRET
-openssl rand -hex 32  # Use for ENCRYPTION_KEY
+# 生成安全密鑰
+openssl rand -hex 32  # 用於 JWT_SECRET
+openssl rand -hex 32  # 用於 ENCRYPTION_KEY
 
-# Initialize database
+# 初始化資料庫
 pnpm run db:migrate
 
-# Start development server
+# 啟動開發伺服器
 pnpm run dev
 ```
 
-### Configuration
+### 配置
 
-1. **Set up Cloudflare Secrets** (Production):
+1. **設置 Cloudflare 密鑰**（生產環境）：
    ```bash
    wrangler secret put JWT_SECRET
    wrangler secret put ENCRYPTION_KEY
    wrangler secret put OPENAI_API_KEY
-   # ... (see .env.example for all secrets)
+   # ... (查看 .env.example 了解所有密鑰)
    ```
 
-2. **Configure OAuth**:
-   - [Google OAuth Setup Guide](./documents/google_oauth_setup_guide.md) - Complete step-by-step guide
-   - [Zoom Integration Setup Guide](./documents/zoom_integration_setup_guide.md) - Complete step-by-step guide
-   - [Google Meet Integration Setup Guide](./documents/google_meet_integration_setup_guide.md) - Complete step-by-step guide
+2. **配置 OAuth**：
+   - [Google OAuth 設置指南](./documents/google_oauth_setup_guide.md) - 完整逐步指南
+   - [Zoom 整合設置指南](./documents/zoom_integration_setup_guide.md) - 完整逐步指南
+   - [Google Meet 整合設置指南](./documents/google_meet_integration_setup_guide.md) - 完整逐步指南
 
-3. **Review Security Settings**:
-   - Check `SECURITY.md` for security policies
-   - Review `security/OWASP_CHECKLIST.md` for compliance
-   - Configure CORS in `backend/src/middleware/cors.ts`
+3. **審查安全設置**：
+   - 查看 `SECURITY.md` 了解安全政策
+   - 查看 `security/OWASP_CHECKLIST.md` 以獲得合規性
+   - 在 `backend/src/middleware/cors.ts` 中配置 CORS
 
-4. **(Optional) Generate Test Data**:
+4. **（可選）生成測試資料**：
    ```bash
    cd backend
    node generate-mock-data.js > generate-mock-data.sql
    wrangler d1 execute coachdb --local --file=./generate-mock-data.sql
    ```
 
-## 🧪 Test Accounts
+## 🧪 測試帳戶
 
-After inserting mock data, you can use these test accounts:
+插入模擬資料後，您可以使用這些測試帳戶：
 
-| Email | Password | Plan | Onboarding | Clients | Meetings |
+| 郵箱 | 密碼 | 方案 | 入職 | 客戶端 | 會議 |
 |-------|----------|------|------------|---------|----------|
-| `coach1@example.com` | `password123` | Pro | ✅ Completed | 4 | 3 |
-| `coach2@example.com` | `password123` | Basic | ✅ Completed | 2 | 1 |
-| `coach3@example.com` | `password123` | Free | ❌ Not completed | 1 | 1 |
+| `coach1@example.com` | `password123` | Pro | ✅ 已完成 | 4 | 3 |
+| `coach2@example.com` | `password123` | Basic | ✅ 已完成 | 2 | 1 |
+| `coach3@example.com` | `password123` | Free | ❌ 未完成 | 1 | 1 |
 
-**Note**: All passwords are hashed with bcrypt in the database. The plain text password `password123` is provided for testing purposes only.
+**注意**：所有密碼在資料庫中使用 bcrypt 雜湊。純文字密碼 `password123` 僅供測試目的。
 
-For detailed test data information, see [backend/README_MOCK_DATA.md](./backend/README_MOCK_DATA.md).
-
----
-
-## 📚 Documentation
-
-### For Users
-- [Security Policy](./SECURITY.md) - Our security commitments
-- [Privacy Policy](./PRIVACY.md) - Coming soon
-- [User Guide](./docs/USER_GUIDE.md) - Coming soon
-
-### For Developers
-- [Memory Bank](./memory-bank/) - Project context and knowledge
-  - [Project Brief](./memory-bank/projectbrief.md)
-  - [Technical Context](./memory-bank/techContext.md)
-  - [System Patterns](./memory-bank/systemPatterns.md)
-- [Integration Setup Guides](./documents/) - Step-by-step integration guides
-  - [Google OAuth Setup](./documents/google_oauth_setup_guide.md) - Google OAuth 2.0 configuration
-  - [Zoom Integration](./documents/zoom_integration_setup_guide.md) - Zoom OAuth & Webhook setup
-  - [Google Meet Integration](./documents/google_meet_integration_setup_guide.md) - Google Meet/Calendar API setup
-- [Security Documentation](./security/)
-  - [OWASP Top 10 Checklist](./security/OWASP_CHECKLIST.md)
-  - [Threat Model](./security/THREAT_MODEL.md)
-- [AI Project Board](./AIPROJECT.MD) - Development tasks and status
-
-### Architecture & Design
-- [Product Context](./memory-bank/productContext.md) - Why we exist
-- [Active Context](./memory-bank/activeContext.md) - Current work focus
-- [Progress Tracking](./memory-bank/progress.md) - Development status
+詳細的測試資料資訊，請參見 [backend/README_MOCK_DATA.md](./backend/README_MOCK_DATA.md)。
 
 ---
 
-## 🔒 Security Features
+## 📚 文件
 
-### 🛡️ Defense in Depth
+### 開發者文件
+- [安全政策](./SECURITY.md) - 我們的安全承諾
+- [隱私政策](./PRIVACY.md) - 即將推出
+- [使用指南](./docs/USER_GUIDE.md) - 即將推出
 
-**Layer 1: Infrastructure**
-- Cloudflare DDoS protection (automatic)
-- Web Application Firewall (WAF)
-- Global edge network (reduced attack surface)
+### 技術文件
+- [記憶庫](./memory-bank/) - 專案背景和知識
+  - [專案摘要](./memory-bank/projectbrief.md)
+  - [技術背景](./memory-bank/techContext.md)
+  - [系統模式](./memory-bank/systemPatterns.md)
+- [整合設置指南](./documents/) - 逐步整合指南
+  - [Google OAuth 設置](./documents/google_oauth_setup_guide.md) - Google OAuth 2.0 配置
+  - [Zoom 整合](./documents/zoom_integration_setup_guide.md) - Zoom OAuth 和 Webhook 設置
+  - [Google Meet 整合](./documents/google_meet_integration_setup_guide.md) - Google Meet/Calendar API 設置
+- [安全文件](./security/)
+  - [OWASP Top 10 檢查清單](./security/OWASP_CHECKLIST.md)
+  - [威脅模型](./security/THREAT_MODEL.md)
 
-**Layer 2: Network**
-- TLS 1.3 encryption (all traffic)
-- HSTS headers (force HTTPS)
-- Certificate management (automatic)
-
-**Layer 3: Application**
-- JWT authentication (RS256 signed)
-- OAuth 2.0 integration (Google Authorization Code Flow, Zoom)
-- Rate limiting (IP + user level)
-- Input validation (Zod schemas)
-- XSS prevention (auto-escaping)
-- SQL injection prevention (ORM)
-
-**Layer 4: Data**
-- At-rest encryption (AES-256-GCM)
-- Field-level encryption (sensitive data)
-- Secure key management (Cloudflare Secrets)
-
-**Layer 5: Monitoring**
-- Audit logging (all security events)
-- Anomaly detection
-- Real-time alerts
-
-### 🔐 Authentication & Authorization
-
-- **Multi-method Auth**: Google OAuth 2.0 (Authorization Code Flow) + Email/Password
-- **Short-lived tokens**: 15-minute access tokens
-- **Secure sessions**: HttpOnly, Secure, SameSite cookies
-- **Password security**: bcrypt hashing (work factor 12+)
-- **MFA support**: Coming soon
-
-### 📊 Compliance
-
-- ✅ **GDPR Compliant**: Data privacy, portability, right to be forgotten
-- ✅ **OWASP Top 10**: Full compliance checklist
-- 🚧 **SOC 2 Type II**: Certification in progress
-- 🚧 **ISO 27001**: Planned for 2026
+### 架構和設計
+- [產品背景](./memory-bank/productContext.md) - 為什麼我們存在
+- [活躍背景](./memory-bank/activeContext.md) - 當前工作重點
+- [進度追蹤](./memory-bank/progress.md) - 開發狀態
 
 ---
 
-## 🏃 Development Workflow
+## 🔒 安全功能
 
-### Sprint Planning
+### 🛡️ 深度防禦
 
-We follow a **security-first development** approach:
+**第 1 層：基礎架構**
+- Cloudflare DDoS 防護（自動）
+- Web 應用防火牆 (WAF)
+- 全球邊緣網路（減少攻擊面）
 
-1. **Security Review** - All features reviewed for security implications
-2. **Threat Modeling** - Identify potential threats
-3. **Secure Implementation** - Follow security patterns
-4. **Security Testing** - OWASP ZAP, Burp Suite scans
-5. **Code Review** - Security-focused reviews
-6. **Audit Logging** - All changes logged
+**第 2 層：網路**
+- TLS 1.3 加密（所有流量）
+- HSTS 標題（強制 HTTPS）
+- 憑證管理（自動）
 
-### Current Sprint (2 Weeks)
+**第 3 層：應用程式**
+- JWT 認證（RS256 簽名）
+- OAuth 2.0 整合（Google 授權代碼流程、Zoom）
+- 速率限制（IP + 使用者級別）
+- 輸入驗證（Zod 架構）
+- XSS 防護（自動轉義）
+- SQL 注入防護（ORM）
 
-See [AIPROJECT.MD](./AIPROJECT.MD) for detailed task breakdown.
+**第 4 層：資料**
+- 靜態加密（AES-256-GCM）
+- 欄位級加密（敏感資料）
+- 安全密鑰管理（Cloudflare 密鑰）
 
-**Week 1**: Core fixes + Security infrastructure
-- ✅ Authentication system (JWT + OAuth)
-- ✅ Security middleware stack
-- ✅ Input validation framework
-- Dashboard data fixes
-- Meeting upload enhancements
+**第 5 層：監控**
+- 稽核日誌（所有安全事件）
+- 異常檢測
+- 即時警報
 
-**Week 2**: Integrations + Testing
-- Zoom/Google Meet integration (secure)
-- Professional onboarding
-- E2E testing
-- Security testing (OWASP scan)
+### 🔐 認證和授權
+
+- **多方法認證**：Google OAuth 2.0（授權代碼流程）+ 電子郵件/密碼
+- **短期令牌**：15 分鐘存取令牌
+- **安全會話**：HttpOnly、Secure、SameSite Cookie
+- **密碼安全**：bcrypt 雜湊（工作因子 12+）
+- **MFA 支援**：即將推出
+
+### 📊 合規性
+
+- ✅ **GDPR 合規**：資料隱私、可移植性、被遺忘權
+- ✅ **OWASP Top 10**：完整合規檢查清單
+- 🚧 **SOC 2 Type II**：認證進行中
+- 🚧 **ISO 27001**：計劃於 2026 年
 
 ---
 
-## 🧪 Testing
+## 🧪 測試
 
-### Security Testing
+### 安全測試
 
 ```bash
-# Run security audit
+# 執行安全稽核
 pnpm run security:audit
 
-# Run OWASP dependency check
+# 執行 OWASP 依賴檢查
 pnpm run security:deps
 
-# Run linting (with security rules)
+# 執行 linting（使用安全規則）
 pnpm run lint
 
-# Type checking (strict mode)
+# 類型檢查（嚴格模式）
 pnpm run type-check
 ```
 
-### Unit & Integration Tests
+### 單元和整合測試
 
 ```bash
-# Run all tests
+# 執行所有測試
 pnpm run test
 
-# Run tests with coverage
+# 執行包含覆蓋率的測試
 pnpm run test:coverage
 
-# Run E2E tests
+# 執行 E2E 測試
 pnpm run test:e2e
 ```
 
 ---
 
-## 📝 Contributing
+## 📝 貢獻
 
-We welcome contributions! Please follow our security guidelines:
+我們歡迎貢獻！請遵循我們的安全指南：
 
-1. **Never commit secrets** - Use `.env.local` (gitignored)
-2. **Security-first mindset** - Think about security implications
-3. **Follow OWASP guidelines** - Check `security/OWASP_CHECKLIST.md`
-4. **Write tests** - Include security test cases
-5. **Code review** - All PRs require security review
+1. **從不提交密鑰** - 使用 `.env.local`（gitignore）
+2. **安全優先心態** - 考慮安全影響
+3. **遵循 OWASP 指南** - 查看 `security/OWASP_CHECKLIST.md`
+4. **編寫測試** - 包括安全測試案例
+5. **程式碼審查** - 所有 PR 需要安全審查
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines.
-
----
-
-## 🚨 Security
-
-### Reporting Vulnerabilities
-
-**Email**: security@coachrocks.ai
-
-Please see our [Security Policy](./SECURITY.md) for:
-- How to report vulnerabilities
-- Our response timeline
-- Responsible disclosure guidelines
-- Bug bounty program (coming soon)
-
-### Security Resources
-
-- [Security Policy](./SECURITY.md)
-- [OWASP Checklist](./security/OWASP_CHECKLIST.md)
-- [Threat Model](./security/THREAT_MODEL.md)
-- [Security Architecture](./memory-bank/systemPatterns.md)
+詳細指南請參見 [CONTRIBUTING.md](./CONTRIBUTING.md)。
 
 ---
 
-## 📄 License
+## 🔒 安全漏洞報告
 
-[MIT License](./LICENSE) - See LICENSE file for details
+有關安全問題報告、我們的回應時間表、負責任披露指南和其他安全資訊，請查看我們的 [安全政策](./SECURITY.md)。
+
+### 安全資源
+
+- [安全政策](./SECURITY.md)
+- [OWASP 檢查清單](./security/OWASP_CHECKLIST.md)
+- [威脅模型](./security/THREAT_MODEL.md)
+- [安全架構](./memory-bank/systemPatterns.md)
 
 ---
 
-## 🙏 Acknowledgments
+## 📄 授權
 
-Built with security-first principles inspired by:
+[MIT 授權](./LICENSE) - 詳見 LICENSE 檔案
+
+---
+
+## 🙏 致謝
+
+受以下安全優先原則啟發而構建：
 - OWASP Top 10
-- NIST Cybersecurity Framework
-- CIS Controls
-- Cloud Security Alliance
+- NIST 網路安全框架
+- CIS 控制項
+- 雲安全聯盟
 
-Powered by:
-- Cloudflare Workers (Edge computing + security)
-- OpenAI GPT-4 (Enterprise API - data privacy)
-- Deepgram (Secure transcription)
-
----
-
-## 📞 Contact
-
-- **Website**: https://coachrocks.ai
-- **Email**: support@coachrocks.ai
-- **Security**: security@coachrocks.ai
-- **Documentation**: https://docs.coachrocks.ai
+由以下支持：
+- Cloudflare Workers（邊緣計算 + 安全）
+- OpenAI GPT-4（企業 API - 資料隱私）
+- Deepgram（安全轉錄）
 
 ---
 
 <div align="center">
 
-**🔒 Built with Security First 🔒**
+**🔒 安全優先構建 🔒**
 
-*Protecting your coaching practice, one session at a time.*
+*保護您的教練實踐，逐次會議。*
 
 </div>
